@@ -1,0 +1,32 @@
+.form-group {
+    /*padding-bottom: 0;*/
+     /*margin: 0 0 0 0; */
+ }
+ .btn{
+ 	/*margin:1px 1px ;*/
+ }
+ .alert{
+ 	/*padding: 10px;*/
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    padding-top:5px;
+    width: 80%;
+ }
+.navbar.navbar-default .dropdown-menu li>a{
+     padding: 5px 0 5px 10px;
+ }
+.navbar.navbar-inverse .dropdown-menu li>a{
+     padding: 5px 0 5px 10px;
+ }
+ .sidebar .nav>li>a{
+ 	padding:6px;
+ }
+ .sidebar .nav .open ul.dropdown-menu a{
+ 	padding:6px;
+ }
+ .sidebar .nav .open ul.dropdown-menu{
+ 	padding:2;
+ }
+ .sidebar{
+ 	/*margin-top: 30px;*/
+ }

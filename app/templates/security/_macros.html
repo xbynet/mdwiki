@@ -1,0 +1,13 @@
+{% macro render_field_with_errors(field) %}
+
+   <!--  {{ field.label }}  -->{{ field(**kwargs)|safe }}
+   {% if field.errors %}
+     <p class="text-danger">
+        {{ ','.join(field.errors) }}
+      </p>
+   {% endif %}
+
+{% endmacro %}
+{% macro render_field(field) %}
+  {{ field(**kwargs)|safe }}
+{% endmacro %}

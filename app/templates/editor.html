@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block style %}
+	    <link rel="stylesheet" href="{{ url_for('static', filename='lib/simplemde/simplemde.min.css') }}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='lib/webuploader/webuploader.min.css') }}">
+	    <link rel="stylesheet" href="{{ url_for('static', filename='lib/taggle.min.css') }}">
+{% endblock style %}
+{% block title -%}
+文章编辑
+{%- endblock title %}
+
+{% block content %}
+		<form method="post" action={{ action }} class="">
+			{{ form.hidden_tag() }}
+			{% if not isSidebar %}
+			    {{ form.title(class="form-control") }}
+			{% endif %}
+            {{ form.content(class="form-control",rows="15",id="textArea1") }}
+			{% if not isSidebar %}
+			<div style="display:none;">
+			{{ input(form.tags, id="tags",placeholder="标签,逗号分隔", class="form-control") }}
+			</div>
+			<div class="tagsDiv input textarea clearfix"></div>
+			{# <div class="colorgraph"></div> #}
+			{% endif %}
+			<div class="form-actions">
+				<div class="pull-right" style="margin-right: 50px;min-width: 200px;">
+					<button class="btn btn-success btn-block " type="submit">Save</button>
+				</div>
+			</div>
+		</form>
+<div id="showProgress" style="z-index: 999;position: fixed;top: 10px;right: 10px;display: none;">
+<a href="http://daringfireball.net/projects/markdown/">markdown syntax</a>
+</div>
+{% endblock content %}
+{% block endscriptjs %}
+<script src="{{ url_for('static', filename='lib/simplemde/simplemde.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/webuploader/webuploader.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='lib/taggle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='editor.js') }}"></script>
+{% endblock endscriptjs %}

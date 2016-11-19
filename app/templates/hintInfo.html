@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title -%}
+	<h2>提示</h2>
+{% endblock title %}
+
+{% block content %}
+{# {{ msg }} #}
+<div>
+{% if canCreate %}
+<a href="{{ url_for('pages.post_new', path=location ) }}" class="btn btn-success btn-raised">创建新的</a>
+{% endif %}
+<a href="{{ url_for('home', url=request.path.strip("/")) }}" class="btn btn-warning btn-raised">返回首页</a></div>
+{% endblock %}

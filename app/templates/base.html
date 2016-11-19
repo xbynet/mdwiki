@@ -1,0 +1,120 @@
+{% from "helpers.html" import input %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    {% block meta %}
+    {% endblock meta %}
+    <title>{{ title }}</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}">
+{#     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap-material-design.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/ripples.min.css') }}">
+ #}
+ {#    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='responsive.css') }}"> 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='pygments.css') }}">
+ #} 
+     <link rel="stylesheet" href=" {{ url_for('static', filename='lib/jqplugin/jquery-ui.min.css') }}"> 
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/simplemde/highlight.min.css') }}"> 
+    {% block style %}
+    {% endblock style %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='animate.min.css') }}">
+
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app.css') }}">
+{#     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='navbar-fixed-side.css') }}"> #}
+
+</head>
+
+<body>
+{% block navmenu %}
+{% include "navmenu.html" %}
+{% endblock navmenu %}
+{% block sidebar %}
+{% include "sidebar.html" %}
+{% endblock sidebar %}
+
+    <div class="main ">
+        <div class="container" style="margin-bottom: 100px;">
+        {% block title %}<h3>{{ title }}</h3>{% endblock title %}
+            {#  <div class="row">
+                <div class="span10 offset1">
+                    {% block header %}
+                    <div class="page-header">
+                        <h1>{% block title %}
+                        {% if page and page.title %}
+                            {{ page.title }}
+                        {% else %}
+                            {{ title }}
+                        {% endif %}
+                        {% endblock title %}</h1>
+                    </div>
+                    {% endblock header %}
+                </div>
+            </div>  #}
+            <div class="row">
+                <div style="margin-left: 10px;">
+                    {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert  alert-{{ category }} alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    {% if form and form.errors %}
+                        {% for field_name in form.errors %}
+                            <div class="alert alert-dismissible alert-danger">{{ form[field_name].label.text }}:{{ ','.join(form.errors[field_name]) }}</div>
+                        {% endfor %}
+
+                    {% endif %}
+                    {% block content %}
+                    {% endblock content %}
+                </div>
+                <div class="span3">
+                    {% block rightbar %}
+                    {% endblock rightbar %}
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="panel panel-info">
+                <div class="panel-body">
+                    {{ config.APP_NAME }} {{ config.APP_START_YEAR }}-{{ moment().format('YYYY年') }}.版权所有！PoweredBy
+                    xbynet.
+                </div>
+            </div>
+        </footer>
+    </div>
+ <a href="javascript:void(0)" class="back-to-top2 hidden-print btn btn-default btn-sm" title="跳至内容>" id="back-to-top"><i class="glyphicon glyphicon-chevron-up"></i></a>
+
+
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/jquery.min.js') }} "></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='lib/moment-with-locales.min.js') }} "></script>
+    {{ moment.include_moment(local_js="") }}{#local_js=""fa防止为None时它去加载国外cdn#}
+    {{ moment.lang("zh-CN") }}
+    <script src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+{#     <script src="{{ url_for('static', filename='lib/bootstrap/js/material.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/bootstrap/js/ripples.min.js') }}"></script>
+ #}
+ <script src="{{ url_for('static', filename='lib/jqplugin/jquery-ui.min.js') }}"></script>
+     <script src="{{ url_for('static', filename='lib/simplemde/highlight.min.js') }}"></script>
+     <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+        {% block endscriptjs %}
+            
+        {% endblock endscriptjs %}
+    <script type="text/javascript">
+        // $.material.init();
+        {% block postscripts %}
+        {% endblock postscripts %}
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_simple_dialog %}
+{% block title %}
+
+	<div class="page-title-bg">
+	<center><h2>{{ title }}</h2>
+		<a class="author" href="#">{{ author }}</a>
+		{% if post.tags|length >0 and post.tags[0].name!='' %}
+		<span>
+		<ul class='taglist-inline'>
+			{% for tag in post.tags %}	
+		<li class="tagPopup"><a class="tag tag-sm" href="{{ url_for('pages.postlistByTag',tagName=tag.name,curNum=1) }}">{{ tag.name }}</a></li>
+			{% endfor %}
+		</ul>
+		</span>
+		{% endif %}
+		{% if meta.modifyat|length >0 and meta.modifyat[0] %}
+		<span style="margin-left:10px;">发布于 {{  meta.modifyat[0][:-8] }}</span>
+		{% endif %}
+		{% set uid=current_user.id|string() %}
+		{% if current_user.is_authenticated and uid==post.userId %}
+				
+			<span>
+			<span style="margin-left: 50px;"></span>
+				<a href="/pages/edit/{{ post.location }}" >编辑</a>
+				<span style="margin-right: 50px;"></span>
+				<a id="delPost" style="color:red;" href="{{ url_for('pages.post_delete',path=post.location) }}">删除</a>
+			</span>
+		{% endif %}
+	</center>
+</div>
+<hr class="colorgraph"></hr>
+{% endblock title %}
+{% block content %}
+<div class="main-content">
+<div class="mdwiki_toc_container pull-right hidden-print affix" data-spy="affix" data-offset-top="150">
+                <!-- TOC START -->
+<div  class="panel panel-default mdwiki_toc">
+<h3 class="toggle panel-heading "  style="cursor: pointer;"><i class="glyphicon glyphicon-list" style="padding-right: 5px"></i> <a href="#collapseToc" data-toggle="collapse"><strong class="glyphicon glyphicon-chevron-up"></strong></a>目录</h3>
+<div id="collapseToc" class="panel-collapse collapse in">
+<div class="panel-body" style="display: block;">
+{{ toc | safe }}
+</div>
+</div>
+</div>
+<!-- TOC END -->
+</div>
+
+<div id="postContent">
+ {{ content|safe }} 
+ </div>
+</div>
+
+{{ render_simple_dialog('delDialog','确定要删除吗？（不可恢复的哦）') }}
+
+{% endblock content %}
+        {% block endscriptjs %}
+<script src="{{ url_for('static', filename='page.js') }}"></script> 
+        {% endblock endscriptjs %}
+
+{% block postscripts %}
+var csrf_token = "{{ csrf_token() }}";
+
+{% endblock postscripts %}

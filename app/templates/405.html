@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title -%}
+	方法未授权的访问!
+{% endblock title %}
+
+{% block content %}
+<p><a href="{{ url_for('home') }}" class="btn btn-warning btn-raised">返回首页</a></p>
+{% endblock %}

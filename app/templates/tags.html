@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}
+<center><h3>标签列表</h3></center>
+<hr class="colorgraph"/>
+{% endblock title %}
+{% block content %}
+{% if tags %}
+<ul class='taglist-inline'>
+			{% for tag in tags -%}
+				{% if tag -%}	
+		<li class="tagPopup"><a class="tag tag-lg" href="{{ url_for('pages.postlistByTag',tagName=tag.name,curNum=1) }}">{{ tag.name }}</a></li>
+		{%- endif %}	
+			{%- endfor %}
+		</ul>
+{% else %}
+<p>还没有任何标签呢</p>
+{% endif %}
+{% endblock content %}
+{% block postscripts %}
+$(function(){
+	testOneAnim('.taglist-inline a,.colorgraph','bounceInDown');
+	$('.taglist-inline a,.colorgraph').on('mouseenter',function(e){
+        testOneAnim(this,'pulse');
+ });
+});
+
+{% endblock postscripts %}

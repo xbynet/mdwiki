@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>simplemde</title>
+	<link rel="stylesheet" href="simplemde.min.css">
+	<!-- <link rel="stylesheet" href="font-awesome.min.css"> -->
+	<link rel="stylesheet" href="highlight.min.css">
+	<script src="jquery.min.js"></script>
+	<script src="simplemde.min.js"></script>
+	<script src="highlight.min.js"></script>
+
+</head>
+<body>
+	<textarea name="ta1" id='ta1'></textarea>
+	<script>
+var simplemde = new SimpleMDE({
+	element: document.getElementById("ta1"),
+	indentWithTabs: false,
+	placeholder: "请书写文章吧",
+	renderingConfig: {
+        singleLineBreaks: false,
+        codeSyntaxHighlighting: true,
+    },
+    spellChecker:false,
+    // styleSelectedText: false,
+    status: ["autosave", "lines", "words", "cursor"], 
+    toolbar:["bold","italic","strikethrough","heading","heading-1","heading-2","heading-3","code","quote","unordered-list","ordered-list","clean-block","link","image","table","horizontal-rule","side-by-side","preview","fullscreen","guide"]
+});
+simplemde.toggleSideBySide()
+</script>
+</body>
+</html>

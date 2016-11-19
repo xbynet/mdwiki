@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+
+{% block title %}
+	
+{% endblock title %}
+{% block content %}
+<div class="container" style="margin-bottom: 100px;">
+<div class="row" >
+<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+<form action="{{ url_for_security('login') }}" method="POST" name="login_user_form" role="form">
+  {{ login_user_form.hidden_tag() }}
+  {{ render_field(login_user_form.next) }}
+<fieldset>
+<h3>登录</h3>
+				<hr class="colorgraph">
+				<div class="form-group">
+					{{ render_field_with_errors(login_user_form.email, type="email" ,class="form-control ", placeholder="Email Address") }}
+				</div>
+				<div class="form-group">
+				  {{ render_field_with_errors(login_user_form.password,type="password",class="form-control ",placeholder="Password") }}
+				</div>
+				<span class="button-checkbox">
+					<button type="button" class="btn" data-color="info">记住我?</button>
+                    <input type="checkbox" name="remember" id="remember_me" class="hidden">
+					<a href="#" class="btn btn-link pull-right">忘记密码?</a>
+				</span>
+				<hr class="colorgraph">
+				<div class="row">
+					<div class="col-xs-6 col-sm-6 col-md-6">
+                        <input type="submit" class="btn  btn-success btn-block btn-raised" value="登录">
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						<a href="#" class="btn  btn-primary btn-block btn-raised">注册</a>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+</div>
+{% endblock content %}
+ {% block endscriptjs %}
+    <script src="{{ url_for('static', filename='lib/jquery.validate.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/additional-methods.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='login.js') }}"></script>
+  {% endblock endscriptjs %}

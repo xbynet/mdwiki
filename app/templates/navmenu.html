@@ -49,7 +49,14 @@
     {% else %}
        <li><a href="{{ url_for_security('login') }}"><span class="navmenuicon hidden-xs showopacity glyphicon glyphicon-user"></span>登录</a></li>  
     {% endif %}
+
       </ul>
+      <form id="searchForm" class="navbar-form navbar-right" action="{{ url_for('pages.searchDef') }}" role="search">
+        <div class="form-group">
+          <input name="keyword" type="text" class="form-control" placeholder="Search">
+        </div>
+        <button id="searchBtn" type="button" class="btn btn-info">搜索</button>
+      </form>
     </div>
   </div>
 </nav>

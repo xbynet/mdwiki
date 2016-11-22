@@ -55,7 +55,7 @@ $(function(){
 		}
 		init();
 	});
-	$("form").validate({
+	$("#loginForm").validate({
 		submitHandler: function(form) {
 			form.submit();
 		},

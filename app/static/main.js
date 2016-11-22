@@ -13,4 +13,7 @@ $(function() {
     $('a,.page-title-bg h2,.colorgraph').on('mouseenter',function(e){
         testOneAnim(this,'pulse');
     });
+    $("#searchBtn").on('click',function(){
+		  $("#searchForm").submit();
+    });
 });

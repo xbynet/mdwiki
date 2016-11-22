@@ -1,4 +1,5 @@
 from app import util
+from datetime import datetime
 # class PostMeta(dict):
 # 	__allowList=['title','author','createAt','location']
 
@@ -12,4 +13,16 @@ from app import util
 # 			self[name]=value
 # 		else:
 # 			return AttributeError(name+" not found")
+
+class SearchPostVo():
+    def __init__(self,location,title,content,summary,createAt,modifyAt,author):
+        self.location=location
+        self.title=title
+        self.content=content
+        self.summary=summary
+        self.createAt=datetime.strptime(createAt,'%Y-%m-%d %H:%M:%S')
+        self.modifyAt=datetime.strptime(modifyAt,'%Y-%m-%d %H:%M:%S')
+        self.author=author
+    def __repr__(self):
+        return "<SearchPostVo %s>" % self.title
 

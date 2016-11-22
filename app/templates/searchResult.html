@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% from "pagination.html" import render_pagination %}
+{% block title %}
+<center><h3>{{keyword}}-搜索结果如下</h3></center>
+<hr class="colorgraph"/>
+{% endblock title %}
+
+{% block content %}
+{% if results %}
+<div id="blog" class="stream-list blog-stream">
+{% for post in results.posts %}
+<section class="stream-list__item">
+<!--    <div class="blog-rank">
+        <div class="votes">
+            0<small>推荐</small>
+        </div>
+        <div class="views hidden-xs">
+            30<small>浏览</small>
+        </div>
+    </div>
+-->
+
+<div class="summary">
+<h2 class="title"><a href="{{ url_for('pages.post_get',path=post.location ) }}">{{ post.title|safe }}</a></h2>
+                                   
+        <p class="excerpt wordbreak hidden-xs">
+        {{ post.summary|safe }}
+        ...</p>
+        <ul class="author list-inline">
+                        <li>
+                <a href="#">
+                   <!-- <img class="avatar-20 mr10 hidden-xs" src=""> -->
+                   {{ post.author }}
+                </a>
+         {#        发布于 <span class="split"></span>{{ post.modifyAt }} #}
+            </li>
+        </ul>
+    </div>
+</section>
+{% endfor %}
+<div class="text-center">
+<nav>
+  <ul class="pagination">
+  {% if results.pagenum>1 %}
+    <li><a href="{{ url_for('pages.search',curPage=(results.pagenum-1)) }}">&laquo;</a></li>
+  {% endif %}
+    <li><a class="disabled" href="#">第{{ results.pagenum }}页,共{{ results.pagecount }}页,共{{ results.total }}条</a></li>
+    {% if results.pagenum<results.pagecount %}
+    <li><a href="{{ url_for('pages.search',curPage=(results.pagenum+1)) }}">&raquo;</a></li>
+    {% endif %}
+  </ul>
+</nav>
+</div>
+</div>
+{% else %}
+<p>很遗憾，没有相关文章</p>
+{% endif %}
+{% endblock content %}

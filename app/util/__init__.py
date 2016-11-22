@@ -96,3 +96,8 @@ def getAbsPostPath(location):
     with app.app_context():
         abspath=os.path.join(current_app.config['PAGE_DIR'],location.replace('/',os.sep))+".md"
     return abspath
+
+def objToDict(obj):
+    objDict=dict((name, getattr(obj, name)) for name in dir(obj)   
+       if not name.startswith('__')  and not callable(name))
+    return objDict 

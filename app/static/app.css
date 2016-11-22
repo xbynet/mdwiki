@@ -395,7 +395,7 @@ ul.taggle_list>li>input.taggle_input:focus{
 }
 .stream-list__item .excerpt {
     margin: 5px 0 0;
-    height: 42px;
+    /*height: 42px;*/
     color: #777;
     font-size: 13px;
     line-height: 1.6;

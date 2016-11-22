@@ -14,6 +14,7 @@ import logging as log
 from app.model.post import Post, Tag
 from app import  User
 from app.model import vo
+from app.util import searchutil
 
 pages=Blueprint('pages',__name__,url_prefix='/pages')
 
@@ -155,8 +156,14 @@ def post_save():
         with open(abspath,'w+',encoding='UTF-8') as f:
             # 这一步很坑，一定要去掉\r，否则每次编辑器显示都会多出空行
             content = form.content.data.replace('\r', '')
-            print(meta)
+            # print(meta)
             f.write(util.fmtPostMeta(meta)+content)
+        postvo=vo.SearchPostVo(content=content,summary=content[:100],**meta)
+        if isNew:
+            searchutil.indexDocument([postvo])
+        else:
+            searchutil.updateDocument([postvo])
+
         return redirect(url_for('.post_get',path=post.location))
   
     flash('保存失败', 'danger')
@@ -176,6 +183,8 @@ def post_delete(path):
         if os.path.exists(abspath):
             os.remove(abspath)
         flash("删除成功！","success")
+        term=dict(fieldName='location',text=path)
+        searchutil.deleteDocument([term])
     else:
         flash("文章不存在!","warning")
     return render_template('hintInfo.html')
@@ -209,3 +218,22 @@ def postlistByTag(tagName,curNum):
 def tagList():
     tags=Tag.query.all()
     return render_template('tags.html',tags=tags)
+
+@pages.route("/search")
+def searchDef():
+    return search(1)
+    
+@pages.route("/search/<int:curPage>",methods=["GET","POST"])
+def search(curPage):
+    keyword=request.args.get('keyword','')
+    if not keyword:
+        flash("参数错误!","warning")
+        return render_template('hintInfo.html')
+    if not curPage:
+        curPage=int(request.args.get('curPage',1))
+    pagelen=int(request.args.get("pagelen",10))
+
+    results=searchutil.searchPage(keyword,curPage,pagelen)
+
+    return render_template('searchResult.html',keyword=keyword,results=results)
+

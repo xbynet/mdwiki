@@ -1,5 +1,4 @@
 from . import views
-from app import db
 from flask import redirect, request, jsonify
 from app.model.post import Tag
 

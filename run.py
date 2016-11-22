@@ -1,10 +1,14 @@
 import os,sys
 # append xbysite package to python path
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from app import app,user_datastore,db,roles_users,User,Role,security
+
 from flask_script import Manager
 from flask_migrate import Migrate,MigrateCommand
 from flask_security.utils import encrypt_password
+from app import app
+from app.extensions import db
+from app.model.userrole import Role,user_datastore
+
 
 migrate=Migrate(app,db)
 manager=Manager(app)

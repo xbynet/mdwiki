@@ -5,7 +5,6 @@ from flask.views import MethodView
 from flask import  render_template,url_for,redirect,request
 import os
 from .forms import SidebarForm
-from app import  app
 from . import views
 from app.util import Constant,SidebarInit
 @views.route('/sidebar/edit')
@@ -22,7 +21,7 @@ def editSidebar():
     return render_template('editor.html',isSidebar=True,action=url_for('.saveSidebar'),form=form)
 
 @views.route('/sidebar/save',methods=['POST'])
-# @login_required
+@login_required
 # @roles_accepted('admin', 'editor')
 def saveSidebar():
     form=SidebarForm()
@@ -32,6 +31,6 @@ def saveSidebar():
             content=form.content.data.replace('\r','')
             print(content)
             f.write(content)
-        SidebarInit.initSidebar(app)
+        SidebarInit.initSidebar()
         return redirect(url_for('home'))
     return render_template('editor.html',isSidebar=True,action=url_for('.saveSidebar'),form=form)

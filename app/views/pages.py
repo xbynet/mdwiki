@@ -7,20 +7,20 @@ from flask_login import current_user,login_required
 
 from app.views.forms import PostForm
 from .import forms
-from app import security, db
+from app.extensions import security, db
 from app import util
 import markdown
 import logging as log
 from app.model.post import Post, Tag
-from app import  User
+from app.model.userrole import  User
 from app.model import vo
 from app.util import searchutil
 
 pages=Blueprint('pages',__name__,url_prefix='/pages')
 
-@pages.route('/',methods=['GET'])
-def page_index():
-    return render_template('home.html')
+# @pages.route('/',methods=['GET'])
+# def page_index():
+    # return render_template('home.html')
 
 @pages.route('/<path:path>',methods=['GET'])
 def post_get(path):

@@ -1,16 +1,28 @@
 import os
+
+from celery import Celery
 from flask import current_app
 
 from datetime import datetime
 from . import Constant
-from app import app
 
+def make_celery(app):
+    """ init celery instance app """
+    celery = Celery(app.import_name)
+    celery.conf.update(app.config)
+    TaskBase = celery.Task
+    class ContextTask(TaskBase):
+        abstract = True
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+    celery.Task = ContextTask
+    return celery
 
 class SidebarInit():
-
     @classmethod
-    def initSidebar(cls,app):
-        sidebar=app.config['G_SHARE']['sidebar']=[]
+    def initSidebar(cls):
+        sidebar=current_app.config['G_SHARE']['sidebar']=[]
         with open(Constant.SIDEBAR_PATH,'r',encoding='UTF-8') as f:
             for line in f:
                 # line=f.readline() # #连接:名字:图标名，形式
@@ -93,7 +105,7 @@ def getNowFmtDate():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 def getAbsPostPath(location):
-    with app.app_context():
+    with current_app.app_context():
         abspath=os.path.join(current_app.config['PAGE_DIR'],location.replace('/',os.sep))+".md"
     return abspath
 

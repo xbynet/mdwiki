@@ -1,4 +1,4 @@
-from . import db
+from app.extensions import db
 import uuid
 
 class Menu(db.Model):

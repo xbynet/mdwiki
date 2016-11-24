@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}
+<center><h3>图片管理列表</h3></center>
+<hr class="colorgraph"/>
+{% endblock title %}
+
+
+  {% block style %}
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/fancyBox/jquery.fancybox.min.css') }}">
+    {% endblock style %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class='list-group gallery'>
+		{% if images %}
+			{% for img in images %}
+            <div class='img-item col-sm-4 col-xs-6 col-md-3 col-lg-3'>
+             <a class="thumbnail fancybox" rel="ligthbox" href="{{ img.link }}">
+                    <img class="img-responsive" alt="" src="{{ img.link }}" />  
+             </a>
+                <div class='text-right'>
+                        {# <small class='text-muted'>Image Title</small> #}
+                       <a  data-path={{ img.path }} class="img-delete" ></a>
+                    </div> <!-- text-right / end -->
+            </div> <!-- col-6 / end -->
+            {% endfor %}
+        {% else %}
+        <div>暂时没有图片</div>
+        {% endif %}
+        </div> <!-- list-group / end -->
+	</div> <!-- row / end -->
+</div>
+{% endblock content %}
+
+{% block endscriptjs %}
+<script src="{{ url_for('static', filename='lib/fancyBox/jquery.fancybox.min.js') }}"></script>       
+{% endblock endscriptjs %}
+
+{% block postscripts %}
+$(document).ready(function(){
+    //FANCYBOX
+    //https://github.com/fancyapps/fancyBox
+    $(".fancybox").fancybox({
+        openEffect: "none",
+        closeEffect: "none"
+    });
+    $(".img-delete").on('click',function(e){
+    	var _this=this;
+    	var path=$(this).data('path');
+    	var url='{{ url_for('admin.imageDelete') }}';
+    	$.get(url,{path:path},function(){
+    		$(_this).parents('div.img-item')[0].remove();
+    	});
+    	return e.preventDefault();
+    });
+    
+    
+    checkload();
+    //建立加载判断函数
+	function checkload(){
+		var curPage=1;
+		var maxPage={{ maxPage }};
+		$(window).scroll(function(){
+			var factor=$(window).height()/($(document).height() -$(window).scrollTop());
+			if(factor>0.9 &&curPage<maxPage){
+				curPage++
+				LoadMore(curPage);
+			}
+		});
+	}
+	var toAppendTemplate="<div class='img-item col-sm-4 col-xs-6 col-md-3 col-lg-3'><a class='thumbnail fancybox' rel='ligthbox' href='{link}'>"
+                    +'<img class="img-responsive" alt="" src="{link}" />'
+                    +"</a><div class='text-right'>"
+                    +'<a  data-path={path} class="img-delete" ></a></div> </div>';
+                    
+	function LoadMore(pageNo){
+		$.get("{{ url_for('admin.imageIndex') }}",{curPage:pageNo},function(data){
+			$.each(data,function(i,e){
+				$("div.gallery").append(toAppendTemplate.replace(/\{link\}/g,e.link).replace('{path}',e.path));
+				$(".img-delete").off('click');
+				$(".img-delete").on('click',function(e){
+    				var _this=this;
+    				var path=$(this).data('path');
+    				var url='{{ url_for('admin.imageDelete') }}';
+    					$.get(url,{path:path},function(){
+    					$(_this).parents('div.img-item')[0].remove();
+    				});
+    				return e.preventDefault();
+    			});
+			});
+			
+		},'json');
+	}
+});
+{% endblock postscripts %}

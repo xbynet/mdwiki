@@ -447,3 +447,18 @@ ul.taggle_list>li>input.taggle_input:focus{
 .blog-stream .stream-list__item .author a {
     color: #009a61;
 }
+.gallery
+{
+    display: inline-block;
+    margin-top: 20px;
+}
+.img-delete{
+    background-image: url('/static/lib/fancybox/fancybox_sprite.png');
+    background-size: 44px 152px;
+    position: absolute;
+    top: -18px;
+    right: -10px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+}

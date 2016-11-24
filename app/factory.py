@@ -4,7 +4,7 @@ from app import config
 from app.extensions import db,babel,moment,cache,security
 
 
-user_datastore=''
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(config)

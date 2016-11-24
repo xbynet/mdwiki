@@ -108,6 +108,10 @@ def getAbsPostPath(location):
     with current_app.app_context():
         abspath=os.path.join(current_app.config['PAGE_DIR'],location.replace('/',os.sep))+".md"
     return abspath
+def getAbsDataItemPath(path):
+    with current_app.app_context():
+        abspath=os.path.join(current_app.config['DATA_DIR'],path)
+    return abspath
 
 def objToDict(obj):
     objDict=dict((name, getattr(obj, name)) for name in dir(obj)   

@@ -15,13 +15,13 @@ from datetime import datetime
 # 			return AttributeError(name+" not found")
 
 class SearchPostVo():
-    def __init__(self,location,title,content,summary,createAt,modifyAt,author):
+    def __init__(self,location,title='',content='',summary='',createAt=None,modifyAt=None,author=''):
         self.location=location
         self.title=title
         self.content=content
         self.summary=summary
-        self.createAt=datetime.strptime(createAt,'%Y-%m-%d %H:%M:%S')
-        self.modifyAt=datetime.strptime(modifyAt,'%Y-%m-%d %H:%M:%S')
+        self.createAt=datetime.strptime(createAt or util.getNowFmtDate(),'%Y-%m-%d %H:%M:%S')
+        self.modifyAt=datetime.strptime(modifyAt or util.getNowFmtDate(),'%Y-%m-%d %H:%M:%S')
         self.author=author
     def __repr__(self):
         return "<SearchPostVo %s>" % self.title

@@ -39,7 +39,7 @@
           <a href="" class="dropdown-toggle" data-toggle="dropdown"><span  class="navmenuicon hidden-xs showopacity glyphicon glyphicon-user"></span>{{ current_user.username or current_user.email  }}<span class="caret"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
               <li><a href="{{ url_for('home') }}"><span class="navmenuicon hidden-xs showopacity glyphicon glyphicon-edit"></span>编辑本页</a></li>
-              <li><a href="{{ url_for('home') }}"><span class="navmenuicon hidden-xs showopacity glyphicon glyphicon-cog"></span>管理</a></li>
+              <li><a href="{{ url_for('admin.manage') }}"><span class="navmenuicon hidden-xs showopacity glyphicon glyphicon-cog"></span>管理</a></li>
               <li><a href="{{ url_for('home') }}"><span class="navmenuicon hidden-xs showopacity glyphicon glyphicon-refresh"></span>更新个人信息</a></li>
                <li class="divider"></li>
               <li><a href="{{ url_for('admin.imageIndex') }}"><span class="navmenuicon hidden-xs showopacity glyphicon glyphicon-picture"></span>多媒体管理</a></li>

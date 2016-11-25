@@ -24,7 +24,7 @@
     {% endblock style %}
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='animate.min.css') }}">
 
-
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/jqplugin/toastr.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='app.css') }}">
 {#     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='navbar-fixed-side.css') }}"> #}
 
@@ -86,7 +86,7 @@
 
         <footer>
             <div class="panel panel-info">
-                <div class="panel-body">
+                <div class="panel-body" style="color: #fff;background-color: #205081 !important;">
                     {{ config.APP_NAME }} {{ config.APP_START_YEAR }}-{{ moment().format('YYYY年') }}.版权所有！PoweredBy
                     xbynet.
                 </div>
@@ -101,6 +101,8 @@
     {{ moment.include_moment(local_js="") }}{#local_js=""fa防止为None时它去加载国外cdn#}
     {{ moment.lang("zh-CN") }}
     <script src="{{ url_for('static', filename='lib/bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='lib/jqplugin/toastr.min.js') }}"></script>
 {#     <script src="{{ url_for('static', filename='lib/bootstrap/js/material.min.js') }}"></script>
     <script src="{{ url_for('static', filename='lib/bootstrap/js/ripples.min.js') }}"></script>
  #}

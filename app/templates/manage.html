@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}
+<center><h3>后台管理</h3></center>
+<hr class="colorgraph"/>
+{% endblock title %}
+
+{% block content %}
+<div>
+	<button id="rebuildIndex" data-url="{{ url_for('pages.rebuildIndex') }}" type="button" class="btn btn-warning">重建索引</button>
+	<div class="progress" style="display: none;">
+  		<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" data-value='11' style="width: 11%">
+  </div>
+</div>
+</div>
+{% endblock content %}
+{% block endscriptjs %}
+<script src="{{ url_for('static', filename='manage.js') }}"></script>       
+{% endblock endscriptjs %}

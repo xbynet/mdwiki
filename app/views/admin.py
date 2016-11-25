@@ -8,6 +8,11 @@ from flask_login import login_required
 from app import util
 admin=Blueprint('admin',__name__,url_prefix='/admin')
 
+@admin.route('/manage')
+@login_required
+def manage():
+	return render_template('manage.html')
+
 @admin.route('/image/index')
 @login_required
 def imageIndex():

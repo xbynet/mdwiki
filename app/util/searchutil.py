@@ -9,6 +9,7 @@ from whoosh.searching import Hit
 from app import config
 from jieba.analyse import ChineseAnalyzer
 from app import util
+from app.model import vo
 
 INDEX_DIR = config.DATA_DIR + os.sep + 'searchIndex'
 
@@ -40,6 +41,19 @@ def reBuildIndex():
         checkIndexDir()
     ix = open_dir(INDEX_DIR)
     # todo
+    pathlist=[]
+    util.walkDirGenDataUrl('pages',pathlist=pathlist)
+    doclist=[]
+    for path in pathlist:
+        with open(path,encoding='utf-8') as f:
+            content=f.read()
+            meta=util.parsePostMeta(content.split('\n\n',1)[0])
+            if not ('location' in meta and meta['location']):
+                meta["location"]=path[len(config.PAGE_DIR):].rsplit('.',1)[0]
+            content=content.split('\n\n',1)[1]
+            postvo = vo.SearchPostVo(content=content, summary=content[:100], **meta)
+            doclist.append(postvo)
+    updateDocument(doclist)
 
 
 def indexDocument(doclist):

@@ -42,11 +42,11 @@
 <nav>
   <ul class="pagination">
   {% if results.pagenum>1 %}
-    <li><a href="{{ url_for('pages.search',curPage=(results.pagenum-1)) }}">&laquo;</a></li>
+    <li><a href="{{ url_for('pages.search',curPage=(results.pagenum-1),keyword=keyword) }}">&laquo;</a></li>
   {% endif %}
     <li><a class="disabled" href="#">第{{ results.pagenum }}页,共{{ results.pagecount }}页,共{{ results.total }}条</a></li>
     {% if results.pagenum<results.pagecount %}
-    <li><a href="{{ url_for('pages.search',curPage=(results.pagenum+1)) }}">&raquo;</a></li>
+    <li><a href="{{ url_for('pages.search',curPage=(results.pagenum+1),keyword=keyword) }}">&raquo;</a></li>
     {% endif %}
   </ul>
 </nav>

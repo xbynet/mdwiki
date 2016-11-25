@@ -4,6 +4,8 @@ from celery import Celery
 from flask import current_app
 
 from datetime import datetime
+
+from app import config
 from . import Constant
 
 def make_celery(app):
@@ -63,6 +65,24 @@ class SidebarInit():
         tmp.append('_blank' if is_http else '')
         return tmp
 
+def walkDirGenDataUrl(subdir,urllist=[],pathlist=[]):
+    BASE=config.DATA_DIR
+    dirname=BASE+os.sep+subdir
+    if not os.path.exists(dirname):
+        return
+    for path,dirs,files in os.walk(dirname):
+        for name in files:
+            fullpath=os.path.join(path,name)
+            pathlist.append(fullpath)
+            urllist.append(fullpath[len(config.DATA_DIR.rsplit(os.sep,1)[0]):])  
+        for dirfile in dirs:
+            if dirfile=='.' or dirfile=='..':
+                continue
+            fullpath=os.path.join(path,dirfile)
+            walkDirGenDataUrl(fullpath,urllist,pathlist)
+
+
+
 def urlDirPathFormat(path):
     path = path.strip()
     path = path.replace('..', '')
@@ -81,9 +101,10 @@ def checkPostLocation(location):
     if location in exclude:
         return False,location
     location=urlDirPathFormat(location)
+    location=location.replace('/', os.sep).replace('\\', os.sep)
     if location.strip()=='':
         return False,location
-    if location.startswith('/'):
+    if location.startswith(os.sep):
         location=location[1:]
         if location.strip()=='':
             return (False,location)

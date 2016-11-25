@@ -34,9 +34,12 @@
 </div>
 {% endblock content %}
 {% block endscriptjs %}
+    <script src="{{ url_for('static', filename='lib/jquery.validate.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/additional-methods.min.js') }}"></script>
 <script src="{{ url_for('static', filename='lib/simplemde/simplemde.min.js') }}"></script>
 <script src="{{ url_for('static', filename='lib/webuploader/webuploader.min.js') }}"></script>
 
 <script src="{{ url_for('static', filename='lib/taggle.min.js') }}"></script>
+
 <script src="{{ url_for('static', filename='editor.js') }}"></script>
 {% endblock endscriptjs %}

@@ -1,4 +1,15 @@
 $(function() {
+    $("form:eq(1)").validate({
+        submitHandler: function(form) {
+            form.submit();
+        },
+        rules: {
+            title: "required"
+        },
+        messages: {
+            title: "必填"
+        }
+    });
     var simplemde = new SimpleMDE({
         element: document.getElementById("textArea1"),
         indentWithTabs: false,
@@ -13,7 +24,12 @@ $(function() {
         toolbar: ["bold", "italic", "strikethrough", "heading", "heading-1", "heading-2", "heading-3", "code", "quote", "unordered-list", "ordered-list", "clean-block", "link", "image", "table", "horizontal-rule", "side-by-side", "preview", "fullscreen", "guide", {
             name: "save",
             action: function(editor) {
-                $('form').submit();
+                if($('form:eq(1)').valid()){
+                    $('form:eq(1)').submit();    
+                }else{
+                    toastr.error("标题必须填写");
+                }
+                
             },
             className: "fa fa-save",
             title: "保存",

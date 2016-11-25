@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint,render_template,redirect,request,flash,url_for,abort,current_app
+from flask import Blueprint,render_template,redirect,request,flash,url_for,abort,current_app, jsonify
 import json,re
 
 from flask import make_response
@@ -15,6 +15,7 @@ from app.model.post import Post, Tag
 from app.model.userrole import  User
 from app.model import vo
 from app.util import searchutil
+import bleach
 
 pages=Blueprint('pages',__name__,url_prefix='/pages')
 
@@ -41,11 +42,14 @@ def post_get(path):
             md_ext=util.Constant.md_ext
             md=markdown.Markdown(output_format='html5',encoding='utf-8',extensions=md_ext)
             html=md.convert(content)
+
             toc=md.toc
             meta=md.Meta
 
             log.debug('meta %s' % meta)
             post=Post.query.get(path)
+            if not post:
+                post={'location':path}
             # user=User.query.get(post.userId)
             return render_template('page.html',content=html,toc=toc,title=meta.get('title','')[0],post=post,author=meta.get('author',' ')[0] ,meta=meta)
 
@@ -77,9 +81,11 @@ def post_edit(path):
         flash("文章不存在",'warning')
         return render_template('hintInfo.html')
     post=Post.query.filter_by(userId=str(current_user.id or os.urandom()),location=path).first()
-    if not post and current_user.username!='admin':
+    if not post and not ('admin' in current_user.roles):
         flash("您没有权限编辑此文章!",'warning')
         return render_template('hintInfo.html')
+    if not post:
+        post=Post(location=path)
     with open(abspath,encoding='UTF-8') as f:
         content=f.read()
             # print('fcontent'+fcontent)
@@ -231,9 +237,14 @@ def search(curPage):
         return render_template('hintInfo.html')
     if not curPage:
         curPage=int(request.args.get('curPage',1))
-    pagelen=int(request.args.get("pagelen",10))
+    pagelen=int(request.args.get("pagelen",30))
 
     results=searchutil.searchPage(keyword,curPage,pagelen)
 
     return render_template('searchResult.html',keyword=keyword,results=results)
 
+@pages.route('/rebuildIndex')
+@login_required
+def rebuildIndex():
+    searchutil.reBuildIndex()
+    return jsonify({'status':'ok'})

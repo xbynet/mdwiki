@@ -18,7 +18,7 @@
 		<span style="margin-left:10px;">发布于 {{  meta.modifyat[0][:-8] }}</span>
 		{% endif %}
 		{% set uid=current_user.id|string() %}
-		{% if current_user.is_authenticated and uid==post.userId %}
+		{% if current_user.is_authenticated and uid==post.userId or 'admin' in current_user.roles %}
 				
 			<span>
 			<span style="margin-left: 50px;"></span>
@@ -55,8 +55,9 @@
 
 {% endblock content %}
         {% block endscriptjs %}
+
 <script src="{{ url_for('static', filename='page.js') }}"></script> 
-        {% endblock endscriptjs %}
+ {% endblock endscriptjs %}
 
 {% block postscripts %}
 var csrf_token = "{{ csrf_token() }}";

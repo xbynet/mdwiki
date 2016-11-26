@@ -51,7 +51,7 @@ def post_get(path):
             if not post:
                 post={'location':path}
             # user=User.query.get(post.userId)
-            return render_template('page.html',content=html,toc=toc,title=meta.get('title','')[0],post=post,author=meta.get('author',' ')[0] ,meta=meta)
+            return render_template('page.html',content=html,toc=toc,title=meta.get('title',' ')[0],post=post,author=meta.get('author',' ')[0] ,meta=meta)
 
         # dirPath=path.split('/')[:-1]
         # filename=path.split('/')[-1]
@@ -205,6 +205,8 @@ def postlistByTag(tagName,curNum):
     posts=list()
     for cur_post in cur_posts:
         abspath=util.getAbsPostPath(cur_post.location)
+        if not os.path.exists(abspath):
+            continue
         with open(abspath,'r',encoding='utf-8') as f:
             content=f.read()
             conSplit=content.split('\n\n',1)

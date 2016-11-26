@@ -9,10 +9,10 @@ $(function(){
 		window.myInterId=setInterval(function(){
 			var value=$(".progress-bar").data('value');
 			var widthInt=parseInt(value);
-			if((widthInt+10)>=60){
-				widthInt+=2;
+			if((widthInt+10)>=80){
+				widthInt+=1;
 			}else{
-				widthInt+=10;
+				widthInt+=2;
 			}
 			$(".progress-bar").data('value',''+widthInt);
 			$(".progress-bar").css('width',widthInt+'%');
@@ -20,6 +20,7 @@ $(function(){
 		$.get($("#rebuildIndex").data('url'),function(data){
 			if(data.status=='ok'){
 				toastr.success('索引重建成功');
+				$(".progress-bar").css('width','100%');
 				$(".progress").hide();
 				clearInterval(window.myInterId);
 				window.myInterId=null;

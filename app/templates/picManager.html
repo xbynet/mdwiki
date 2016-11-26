@@ -11,6 +11,38 @@
 
 {% block content %}
 <div class="container">
+<div>
+{% if breadcrumbs %}
+	<ol class="breadcrumb" style="padding: 4px 6px; margin-bottom: 5px;color:#fff;background-color: #205081;">
+	{% for item in breadcrumbs %}
+		{% if loop.last %}
+		<li><a href="#" style="color: #EEDC94;">{{ item }}</a></li>	
+		{% else %}
+		<li><a href="" style="color: #fff;">{{ item }}</a></li>
+		{% endif %}
+	{% endfor %}
+</ol>
+{% endif %}
+</div>
+<div class="">
+顶级目录列表：
+		{% if topPathlist %}
+			{% for topPath in topPathlist %}
+				<a class="btn btn-sm btn-info"  href="{{ url_for('admin.imageIndex',path=topPath) }}">{{ topPath }}</a>
+			{% endfor %}
+		{% endif %}
+</div>
+<div id="datas" data-path='{{ path }}' style="display: none;"></div>
+
+
+	<div class="">
+	子目录列表<br/>
+		{% if dirs %}
+			{% for tdir in dirs %}
+				<a class="btn btn-sm btn-default" href="{{ url_for('admin.imageIndex',path=tdir.path) }}">{{ tdir.name }}</a>
+			{% endfor %}
+		{% endif %}
+	</div>
 	<div class="row">
 		<div class='list-group gallery'>
 		{% if images %}
@@ -28,8 +60,8 @@
         {% else %}
         <div>暂时没有图片</div>
         {% endif %}
-        </div> <!-- list-group / end -->
-	</div> <!-- row / end -->
+        </div>
+	</div> 
 </div>
 {% endblock content %}
 
@@ -75,7 +107,7 @@ $(document).ready(function(){
                     +'<a  data-path={path} class="img-delete" ></a></div> </div>';
                     
 	function LoadMore(pageNo){
-		$.get("{{ url_for('admin.imageIndex') }}",{curPage:pageNo},function(data){
+		$.get("{{ url_for('admin.imageIndex',path=path ) }}",{curPage:pageNo},function(data){
 			$.each(data,function(i,e){
 				$("div.gallery").append(toAppendTemplate.replace(/\{link\}/g,e.link).replace('{path}',e.path));
 				$(".img-delete").off('click');

@@ -99,6 +99,7 @@ gulp.task('product',function(callback) {
     runSequence('set-production','clean',['html', 'jsmin','cssmin','copy'],callback);
 });
 gulp.task('watch', function() {
+  gulp.watch(SRC_DIR+TEMP_DIR_NAME+'/**/*.html',['html']);
   // Watch .js files
   gulp.watch(SRC_DIR+STATIC_DIR_NAME+'/**/*.js', ['jsmin']);
   // Watch image files

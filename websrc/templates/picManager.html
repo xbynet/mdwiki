@@ -49,7 +49,7 @@
 			{% for img in images %}
             <div class='img-item col-sm-4 col-xs-6 col-md-3 col-lg-3'>
              <a class="thumbnail fancybox" rel="ligthbox" href="{{ img.link }}">
-                    <img class="img-responsive" alt="" src="{{ img.link }}" />  
+                    <img class="img-responsive" style="max-width: 300px;max-height: 250px;"alt="" src="{{ img.link }}" />  
              </a>
                 <div class='text-right'>
                         {# <small class='text-muted'>Image Title</small> #}
@@ -102,7 +102,7 @@ $(document).ready(function(){
 		});
 	}
 	var toAppendTemplate="<div class='img-item col-sm-4 col-xs-6 col-md-3 col-lg-3'><a class='thumbnail fancybox' rel='ligthbox' href='{link}'>"
-                    +'<img class="img-responsive" alt="" src="{link}" />'
+                    +'<img class="img-responsive" alt="" style="max-width: 300px;max-height: 250px;" src="{link}" />'
                     +"</a><div class='text-right'>"
                     +'<a  data-path={path} class="img-delete" ></a></div> </div>';
                     

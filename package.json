@@ -15,11 +15,15 @@
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.1",
     "gulp-flatten": "^0.3.1",
+    "gulp-imagemin": "^3.1.1",
     "gulp-minify-css": "^1.2.4",
     "gulp-rev": "^7.1.2",
     "gulp-sourcemaps": "^1.9.1",
     "gulp-uglify": "^2.0.0",
     "gulp-version-number": "^0.1.5",
+    "imagemin-pngquant": "^5.0.0",
+    "jpegtran-bin": "^3.1.0",
+    "pngquant-bin": "^3.1.1",
     "pump": "^1.0.1",
     "run-sequence": "^1.2.2"
   }

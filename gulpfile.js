@@ -7,9 +7,12 @@ const sourcemaps=require('gulp-sourcemaps');
 const runSequence = require('run-sequence');
 const del = require('del');
 const cssmin = require('gulp-minify-css');
-//const imagemin = require('gulp-imagemin');
+const imagemin = require('gulp-imagemin');
 const clean = require('gulp-clean');
 //const flatten = require('gulp-flatten');
+const pngquant = require('imagemin-pngquant');
+//const cache = require('gulp-cache');
+
 const DEST_DIR='app/';
 const SRC_DIR='websrc/';
 const TEMP_DIR_NAME='templates';
@@ -77,6 +80,23 @@ gulp.task('rawtoone', () =>{
         .pipe(flatten())
 		//.pipe(imagemin())
         .pipe(gulp.dest(DEST_DIR+STATIC_DIR_NAME));
+	}
+);
+gulp.task('dokuimgmin', () =>{
+    return gulp.src(['data/dokuwiki'+'/**/*.{png,jpg,jpeg,gif,bmp,ico}'])
+		.pipe(
+			//cache(
+			imagemin({
+			optimizationLevel: 5, //类型：Number  默认：3  取值范围：0-7（优化等级）
+            progressive: true, //类型：Boolean 默认：false 无损压缩jpg图片
+            interlaced: true, //类型：Boolean 默认：false 隔行扫描gif进行渲染
+            multipass: true, //类型：Boolean 默认：false 多次优化svg直到完全优化
+			svgoPlugins: [{removeViewBox: false}],//不要移除svg的viewbox属性
+			use: [pngquant()] //使用pngquant深度压缩png图片的imagemin插件
+		})
+		//)
+		)
+        .pipe(gulp.dest('data/dokuwiki2'));
 	}
 );
 gulp.task('copy', () =>{

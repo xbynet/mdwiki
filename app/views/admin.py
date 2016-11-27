@@ -18,10 +18,10 @@ def manage():
 @admin.route('/image/index')
 @login_required
 def imageIndex():
-    topPathlist=['upload','dokuwiki']
-    path='upload'
-    if request.args.get('path',''):
-        isValid,path=util.checkPostLocation(request.args.get('path',''))
+    topPathlist=['upload','upload_bak','dokuwiki']
+    path=request.args.get('path','upload')
+    if path:
+        isValid,path=util.checkPostLocation(path)
         if not isValid:
             raise ArgsErrorException('路径参数错误')
     imgDir=util.getAbsDataItemPath(path)

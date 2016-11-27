@@ -15,3 +15,4 @@ python run.py init_admin
 
 python run.py run
 
+if you want to show upload images please see conf/nginx.conf

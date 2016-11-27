@@ -1,0 +1,36 @@
+{
+  "name": "xbysite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server  --progress --colors --hot --inline --config ./build/webpack.dev.config.js",
+    "build": "webpack --progress --colors --config ./build/webpack.product.config.js"
+  },
+  "author": "xby",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^6.5.1",
+    "babel-core": "^6.18.0",
+    "babel-loader": "^6.2.7",
+    "css-loader": "^0.25.0",
+    "exports-loader": "^0.6.3",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "gulp": "^3.9.1",
+    "imports-loader": "^0.6.5",
+    "json-loader": "^0.5.4",
+    "postcss-loader": "^1.1.0",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "vue-html-loader": "^1.2.3",
+    "vue-loader": "^9.7.0",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "vue": "^1.0.26"
+  }
+}

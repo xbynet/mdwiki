@@ -8,3 +8,8 @@ env
 venv
 *.sublime*
 /data
+/node_modules
+/app/static
+/app/templates
+/info.log
+/errors.log

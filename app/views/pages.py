@@ -112,9 +112,9 @@ def post_save():
         post=Post.query.filter_by(userId=str(current_user.id),location=location).first()
         isNew=True if not post else False
 
-        if isNew and postExist:
+        if isNew and postExist and not ('admin' in current_user.roles):
             flash("文章早已存在",'info')
-            redirect(url_for('.post_get',path=location))
+            return redirect(url_for('.post_get',path=location))
 
         meta=dict(title=form.title.data,author=current_user.username or current_user.email,
             createAt=form.createAt.data,location=location
@@ -158,6 +158,7 @@ def post_save():
 
         if post.location.find(os.sep)>0:
             dir=abspath.rsplit(os.sep,1)[0]
+
             if not os.path.exists(dir):
                 os.makedirs(dir)
         with open(abspath,'w+',encoding='UTF-8') as f:

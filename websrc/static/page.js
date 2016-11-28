@@ -47,5 +47,5 @@ $(function() {
     //animate
     // testAnim('.page-title-bg','jello');
     
-    testOneAnim('.main','bounce');
+    // testOneAnim('.main','bounce');
 });

@@ -155,7 +155,8 @@ def post_save():
         db.session.commit()
 
         abspath=util.getAbsPostPath(post.location)
-        if post.location.find('/')>0:
+
+        if post.location.find(os.sep)>0:
             dir=abspath.rsplit(os.sep,1)[0]
             if not os.path.exists(dir):
                 os.makedirs(dir)

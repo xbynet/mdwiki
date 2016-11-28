@@ -41,7 +41,7 @@ $(function() {
         breadcrumb=[];
     }
 
-    var curPage={name:$(".title").text(),url:location.href}
+    var curPage={name:$(".title:first").text(),url:location.href}
     var shouldAdd=true;
     for(var i=0;i<breadcrumb.length;i++){
         if(curPage.name==breadcrumb[i].name || !curPage.name){

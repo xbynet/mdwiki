@@ -107,7 +107,9 @@ def searchPage(keyword, curPage=1, pagelen=10):
             tmp=dict()
             tmp['title']=hint.highlights("title",minscore=0)
             tmp['author']=hint["author"]
-            tmp['location']=hint["location"]
+            tmp['location']=hint["location"].replace(os.sep,'/').replace('//','/')
+            if tmp['location'].startswith('/'):
+                tmp['location']=tmp['location'][1:]
             tmp['summary']=hint.highlights("summary",minscore=0)#hint["content"].replace(key,"<code>%s</code>" % key)
 
             resPage['posts'].append(tmp)

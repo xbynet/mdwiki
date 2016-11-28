@@ -32,5 +32,33 @@ $(function() {
         "hideEasing": "linear",
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
+    };
+
+    var breadcrumb=localStorage.getItem('breadcrumb');
+    if(breadcrumb){
+        breadcrumb=JSON.parse(breadcrumb);
+    }else{
+        breadcrumb=[];
     }
+
+    var curPage={name:$(".title").text(),url:location.href}
+    var shouldAdd=true;
+    for(var i=0;i<breadcrumb.length;i++){
+        if(curPage.name==breadcrumb[i].name || !curPage.name){
+            shouldAdd=false;
+            break;
+        }
+    }
+    if(shouldAdd){
+        if(breadcrumb.length>=5){
+            breadcrumb.shift();
+        }
+        breadcrumb.push(curPage);
+    }
+    localStorage.setItem('breadcrumb',JSON.stringify(breadcrumb));
+    $.each(breadcrumb,function(i,e){
+        var replace='<li><a href="'+e.url+'" style="color: #fff;">'+e.name+'</a></li>';
+        $('.topbreadcrumb').append(replace);
+    });
+     $('.topbreadcrumb').show();
 });

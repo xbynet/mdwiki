@@ -104,7 +104,7 @@ def checkPostLocation(location):
     location=location.replace('/', os.sep).replace('\\', os.sep)
     if location.strip()=='':
         return False,location
-    if location.startswith(os.sep):
+    while location.startswith(os.sep):
         location=location[1:]
         if location.strip()=='':
             return (False,location)

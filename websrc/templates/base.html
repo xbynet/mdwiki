@@ -40,7 +40,15 @@
 
     <div class="main ">
         <div class="container" style="margin-bottom: 100px;">
-        {% block title %}<h3>{{ title }}</h3>{% endblock title %}
+<div>
+
+<ol class="topbreadcrumb breadcrumb" style="padding: 4px 6px; margin-bottom: 5px;color:#fff;background-color: #205081;display: none;">
+        <li>您的脚步:</li>
+        <!--<li><a href="#" style="color: #fff;"></a></li> -->
+</ol>
+</div>
+
+        {% block title %}<h3 class='title'>{{ title }}</h3>{% endblock title %}
             {#  <div class="row">
                 <div class="span10 offset1">
                     {% block header %}

@@ -7,13 +7,16 @@ from flask_login import login_required
 
 from app import util
 from app.util.exceptions import *
+from app.util.backup import AliyunOSS
+from app import config
 
 admin=Blueprint('admin',__name__,url_prefix='/admin')
 
 @admin.route('/manage')
 @login_required
 def manage():
-    return render_template('manage.html')
+    infos=backupinfo()
+    return render_template('manage.html',title='xbynet后台管理',bakData=infos)
 
 @admin.route('/image/index')
 @login_required
@@ -54,3 +57,25 @@ def imageDelete():
         if os.path.exists(path):
             os.remove(path)
     return jsonify({'status':'ok'})
+
+@admin.route('/backup/delete/<string:key>')
+@login_required
+def backupDelete(key):
+    if not key:
+        raise ArgsErrorException('参数错误')
+    oss=AliyunOSS(**config.oss)
+    oss.deleteFile(key)
+    return jsonify({'status':'ok','msg':'删除成功'})
+@admin.route('/backup/download/<string:key>')
+@login_required
+def backupDownload(key):
+    if not key:
+        raise ArgsErrorException('参数错误')
+    oss=AliyunOSS(**config.oss)
+    url=oss.getDownloadUrl(key)
+    return jsonify({'status':'ok','url':url})
+
+def backupinfo():
+    oss = AliyunOSS(**config.oss)
+    lists=oss.listFiles()
+    return lists

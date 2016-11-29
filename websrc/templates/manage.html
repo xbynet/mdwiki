@@ -6,11 +6,43 @@
 
 {% block content %}
 <div>
-	<button id="rebuildIndex" data-url="{{ url_for('pages.rebuildIndex') }}" type="button" class="btn btn-warning">重建索引</button>
+<h4 style="border-left: 2px solid #205081;">索引管理</h4>
+	<button id="rebuildIndex" data-url="{{ url_for('pages.rebuildIndex') }}" type="button" class="btn btn-sm btn-info">重建索引</button>
 	<div class="progress" style="display: none;">
   		<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" data-value='5' style="width: 5%">
   </div>
 </div>
+</div>
+<div>
+
+<h4 style="border-left: 2px solid #205081;">备份管理</h4>
+{% if bakData|length >0 %}
+<div class="table-responsive">
+  <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>文件名</th>
+            <th>大小</th>
+            <th>下载</th>
+            <th>删除</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for data in bakData %}
+          <tr>
+            <td>{{ data.name }}</td>
+            <td>{{ data.size }}</td>
+            <td><button class="downbakBtn btn btn-sm btn-info" data-url='{{ url_for("admin.backupDownload",key=data.name) }}'>下载</button></td>
+            <td><button class="delbakBtn btn btn-sm btn-danger" data-url='{{ url_for("admin.backupDelete",key=data.name) }}' >删除</button></td>
+          </tr> 
+         {% endfor %}
+        </tbody>
+  
+  </table>
+</div>
+{% else %}
+暂无数据
+{% endif %}
 </div>
 {% endblock content %}
 {% block endscriptjs %}

@@ -148,3 +148,14 @@ SECURITY_CHANGEABLE=True #是否允许密码修改，默认为False。如果为T
 #SECURITY_DEFAULT_REMEMBER_ME	默认为False，是否允许记住我功能。
 
 
+
+###########################
+# aliyun oss
+###########################
+oss={
+    'api_key':os.environ.get('aliyun_api_key',''),
+    'secret_key':os.environ.get('aliyun_secret_key',''),
+    'bucket_name':'mdwikidata',
+    'inner_endpoint':None, #'http://oss-cn-shenzhen-internal.aliyuncs.com',
+    'out_endpoint':'http://oss-cn-shenzhen.aliyuncs.com'
+}

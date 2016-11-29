@@ -13,3 +13,4 @@ venv
 /app/templates
 /info.log
 /errors.log
+/.idea

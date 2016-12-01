@@ -1,8 +1,7 @@
 from flask import Flask
 from flask_wtf import CsrfProtect
 from app import config
-from app.extensions import db,babel,moment,cache,security
-
+from app.extensions import db,babel,moment,cache,security,mail
 
 
 def create_app():
@@ -15,8 +14,7 @@ def create_app():
     babel.init_app(app)
     moment.init_app(app)
     cache.init_app(app)
-
-
+    mail.init_app(app)
 
 
     #######Menu##############

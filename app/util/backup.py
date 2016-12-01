@@ -63,7 +63,7 @@ class AliyunOSS(object):
             path) < 1024 * 1024 else os.path.getsize(path) // 10
         success = False
         retry = 5
-        while not success:
+        while not success and retry>0:
             retry -= 1
             try:
                 oss2.resumable_upload(self.bucket, path.rsplit(os.sep, 1)[1], path, progress_callback=self.percentage,
@@ -72,10 +72,12 @@ class AliyunOSS(object):
                                       part_size=part_size,
                                       num_threads=4)
                 success = True
+                return true
             except oss2.exceptions.RequestError as e:
                 log.warn('上传失败，即将进行重试')
                 time.sleep(2)
                 continue
+        return False
 
     def listFiles(self):
         """list bucket files
@@ -95,12 +97,14 @@ class AliyunOSS(object):
         """delete file
 
         Args:
-            key (TYPE): file key also is the name
+            key (TYPE): file key also is the name or the key list
 
         Returns:
             TYPE: Description
         """
-        self.bucket.delete_object(key)
+        if isinstance(key,list):
+            return self.bucket.batch_delete_objects(key)
+        return self.bucket.delete_object(key)
 
     def getDownloadUrl(self, key):
         """get download url for file , valid in 1200s

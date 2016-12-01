@@ -7,6 +7,7 @@ from flask_cache import Cache
 # from flask_restful import Resource, Api
 from flask_babel import Babel
 # from flask_security import Security
+from flask_mail import Mail
 
 babel = Babel()
 # api=Api()
@@ -15,3 +16,6 @@ db = SQLAlchemy()
 moment = Moment()
 cache = Cache()
 security = Security()
+mail = Mail()
+
+

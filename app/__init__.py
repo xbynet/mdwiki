@@ -11,7 +11,7 @@ from app import util
 from app.util import make_celery
 
 app=create_app()
-celery_app = make_celery(app)
+#celery_app = make_celery(app)
 
 # Setup Flask-Security
 

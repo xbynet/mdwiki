@@ -18,7 +18,7 @@ def sendMail(content):
             body=content)
         mail.send(msg)
 
-#@celery_app.task(name='tasks.backup')
+@celery_app.task(name='tasks.backup')
 def backupDataTask():
     datapath='/opt/www/mdwiki/data'+datetime.now().strftime('%Y%m%d')+'.tar.gz'
     oss=backup.AliyunOSS(**config.oss)
@@ -34,7 +34,7 @@ def backupDataTask():
     msg='备份状态为:%s' % status
     sendMail(msg)
 
-@celery_app.task(name='tasks.backup')#name='tasks.backup'
+#@celery_app.task(name='tasks.backup')#name='tasks.backup'
 def test():
     log.warn('aaaaaaaaaaaaaaaaaaaaaaaa')
     sendMail('您好，今天数据状态为:%s' % '成功')

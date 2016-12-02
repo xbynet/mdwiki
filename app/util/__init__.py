@@ -1,5 +1,10 @@
+"""Summary
+"""
 import os
-
+import sys
+import shutil
+import re
+import tarfile
 from celery import Celery
 from flask import current_app
 
@@ -8,23 +13,49 @@ from datetime import datetime
 from app import config
 from . import Constant
 
+
 def make_celery(app):
-    """ init celery instance app """
+    """init celery instance app 
+    
+    Args:
+        app (TYPE): Description
+    """
     #celery = Celery(app.import_name)
     from app.extensions import celery_app
     celery_app.conf.update(app.config)
     TaskBase = celery_app.Task
     class ContextTask(TaskBase):
+        """Summary
+        
+        Attributes:
+            abstract (bool): Description
+        """
         abstract = True
         def __call__(self, *args, **kwargs):
+            """Summary
+            
+            Args:
+                *args (TYPE): Description
+                **kwargs (TYPE): Description
+            
+            Returns:
+                TYPE: Description
+            """
             with app.app_context():
                 return TaskBase.__call__(self, *args, **kwargs)
     celery_app.Task = ContextTask
     return celery_app
 
 class SidebarInit():
+    """Summary
+    """
     @classmethod
     def initSidebar(cls):
+        """Summary
+        
+        Returns:
+            TYPE: Description
+        """
         sidebar=current_app.config['G_SHARE']['sidebar']=[]
         with open(Constant.SIDEBAR_PATH,'r',encoding='UTF-8') as f:
             for line in f:
@@ -45,6 +76,15 @@ class SidebarInit():
 
     @classmethod
     def __analyzeLine(cls,line,flag):
+        """Summary
+        
+        Args:
+            line (TYPE): Description
+            flag (TYPE): Description
+        
+        Returns:
+            TYPE: Description
+        """
         line=line.strip()
         default_icon='th-list'
         is_http=line.startswith(flag+"http://") or line.startswith(flag+"https://")
@@ -67,6 +107,16 @@ class SidebarInit():
         return tmp
 
 def walkDirGenDataUrl(subdir,urllist=[],pathlist=[]):
+    """Summary
+    
+    Args:
+        subdir (TYPE): Description
+        urllist (list, optional): Description
+        pathlist (list, optional): Description
+    
+    Returns:
+        TYPE: Description
+    """
     BASE=config.DATA_DIR
     dirname=BASE+os.sep+subdir
     if not os.path.exists(dirname):
@@ -80,11 +130,17 @@ def walkDirGenDataUrl(subdir,urllist=[],pathlist=[]):
             if dirfile=='.' or dirfile=='..':
                 continue
             fullpath=os.path.join(path,dirfile)
-            walkDirGenDataUrl(fullpath,urllist,pathlist)
-
 
 
 def urlDirPathFormat(path):
+    """Summary
+    
+    Args:
+        path (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     path = path.strip()
     path = path.replace('..', '')
     path = path.replace('./', '/')
@@ -92,11 +148,12 @@ def urlDirPathFormat(path):
 
 def checkPostLocation(location):
     """检查文章location参数是否合法
+    
     Args:
-        location (str): 
+        location (str)
     
     Returns:
-        tuple:返回一个包含两个值的元组。如(True,location)
+        tuple: 返回一个包含两个值的元组。如(True,location)
     """
     exclude=['save','edit','delete']
     if location in exclude:
@@ -114,28 +171,75 @@ def checkPostLocation(location):
 
 
 def fmtPostMeta(metaDict):
+    """Summary
+    
+    Args:
+        metaDict (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     metaStr=''
     for key,value in metaDict.items():
         metaStr+=str(key)+":"+value.replace('\r','').replace('\n','')+'\n'
     return metaStr+'\n'
 def parsePostMeta(metaStr):
+    """Summary
+    
+    Args:
+        metaStr (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     lines=metaStr.split('\n')
     resMeta=dict([tuple([line.split(':')[0],':'.join(line.split(':')[1:])] if len(line.split(':'))>2 else line.split(':')) for line in lines])
     return resMeta
 
 def getNowFmtDate():
+    """Summary
+    
+    Returns:
+        TYPE: Description
+    """
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 def getAbsPostPath(location):
+    """Summary
+    
+    Args:
+        location (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     with current_app.app_context():
         abspath=os.path.join(current_app.config['PAGE_DIR'],location.replace('/',os.sep))+".md"
     return abspath
 def getAbsDataItemPath(path):
+    """Summary
+    
+    Args:
+        path (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     with current_app.app_context():
         abspath=os.path.join(current_app.config['DATA_DIR'],path)
     return abspath
 
 def objToDict(obj):
+    """convert obj attr to dict
+    
+    Args:
+        obj (TYPE): Description
+    
+    Returns:
+        TYPE: Description
+    """
     objDict=dict((name, getattr(obj, name)) for name in dir(obj)   
        if not name.startswith('__')  and not callable(name))
     return objDict 
+
+

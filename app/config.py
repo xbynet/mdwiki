@@ -111,7 +111,7 @@ CELERY_CONFIG={
         'bak-every-day': {
         'task': 'tasks.backup',
             # 'schedule': timedelta(seconds=30),
-        'schedule': timedelta(seconds=30)#crontab(minute='*/1',hour='*', day_of_month='*')
+        'schedule': timedelta(minutes=50)#crontab(minute='*/1',hour='*', day_of_month='*')
             #'args':
         }
     },

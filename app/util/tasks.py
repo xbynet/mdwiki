@@ -20,7 +20,8 @@ def sendMail(content):
 
 @celery_app.task(name='tasks.backup')
 def backupDataTask():
-    datapath='/opt/www/mdwiki/data'+datetime.now().strftime('%Y%m%d')+'.tar.gz'
+    #datapath='/opt/www/mdwiki/data'+datetime.now().strftime('%Y%m%d')+'.tar.gz'
+    datapath=backup.tarzipData()
     oss=backup.AliyunOSS(**config.oss)
     isSuccess=oss.resumableUpload(datapath)
     

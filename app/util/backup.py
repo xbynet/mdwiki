@@ -6,6 +6,9 @@ import logging as log
 import oss2
 from datetime import datetime
 from itertools import islice
+import tarfile
+
+from app import config
 
 
 class AliyunOSS(object):
@@ -62,7 +65,7 @@ class AliyunOSS(object):
         part_size = os.path.getsize(path) if os.path.getsize(
             path) < 1024 * 1024 else os.path.getsize(path) // 10
         success = False
-        retry = 5
+        retry = 10
         while not success and retry>0:
             retry -= 1
             try:
@@ -72,7 +75,7 @@ class AliyunOSS(object):
                                       part_size=part_size,
                                       num_threads=4)
                 success = True
-                return true
+                return True
             except oss2.exceptions.RequestError as e:
                 log.warn('上传失败，即将进行重试')
                 time.sleep(2)
@@ -88,7 +91,7 @@ class AliyunOSS(object):
         # oss2.models.SimplifiedObjectInfo
         reslist = []
         for b in oss2.ObjectIterator(self.bucket):
-            print("name:" + b.key + ",size:%.2fM" % (b.size / 1024 / 1024))
+            log.info("name:" + b.key + ",size:%.2fM" % (b.size / 1024 / 1024))
             reslist.append(dict(name=b.key, size="%.2fM" %
                                                  (b.size / 1024 / 1024)))
         return reslist
@@ -130,7 +133,7 @@ class AliyunOSS(object):
         print(str(consumed_bytes) + ":" + str(total_bytes))
         if total_bytes:
             rate = int(100 * (float(consumed_bytes) / float(total_bytes)))
-            print('\r{0}% '.format(rate), end='')
+            #print('\r{0}% '.format(rate), end='')
             log.debug('\r{0}% '.format(rate))
             sys.stdout.flush()
 
@@ -142,6 +145,39 @@ class AliyunOSS(object):
             TYPE: Description
         """
         return datetime.now().strftime('%Y%m%d')
+
+
+def tarzipData():
+    """compress data to tar.gz
+    
+    Returns:
+        TYPE: the compressed file path
+    """
+    dataPath=config.DATA_DIR
+    base=os.path.abspath(os.path.join(dataPath,'..'))
+    def excludePath(path):
+        """Summary
+        
+        Args:
+            path (TYPE): Description
+        
+        Returns:
+            TYPE: Description
+        """
+        for name in ['searchIndex']:
+            if path.find(os.sep+name+os.sep)>0:
+                return True
+        return False
+    backupPath=os.path.join(base,'backup')
+    if not os.path.exists(backupPath):
+        os.mkdir(backupPath)
+    data=os.path.join(backupPath,'data%s.tar.gz' % datetime.now().strftime('%Y%m%d'))
+
+    with tarfile.open(data,'w:gz') as f:
+        f.add(dataPath,arcname='data',exclude=excludePath)
+
+    return data
+
 
 
 if __name__ == '__main__':

@@ -16,13 +16,13 @@
 		{% endif %}
 		{% if meta.modifyat|length >0 and meta.modifyat[0] %}
 		<span style="margin-left:10px;">发布于 {{  meta.modifyat[0][:-8] }}</span>
-		{% endif %}
+		{% endif %} 
 		{% set uid=current_user.id|string() %}
 		{% if current_user.is_authenticated and uid==post.userId or 'admin' in current_user.roles %}
 				
 			<span>
 			<span style="margin-left: 50px;"></span>
-				<a href="/pages/edit/{{ post.location }}" >编辑</a>
+				<a href="{{ url_for('pages.post_edit',path=post.location) }}" >编辑</a>
 				<span style="margin-right: 50px;"></span>
 				<a id="delPost" style="color:red;" href="{{ url_for('pages.post_delete',path=post.location) }}">删除</a>
 			</span>

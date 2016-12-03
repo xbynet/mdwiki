@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title -%}
-	<h2>提示</h2>
+	<h4>提示</h4>
 {% endblock title %}
 
 {% block content %}
-{# {{ msg }} #}
+ {{ msg }}
 <div>
 {% if canCreate %}
 <a href="{{ url_for('pages.post_new', path=location ) }}" class="btn btn-success btn-raised">创建新的</a>

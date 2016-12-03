@@ -110,8 +110,8 @@ CELERY_CONFIG={
     'CELERYBEAT_SCHEDULE' : {
         'bak-every-day': {
         'task': 'tasks.backup',
-            # 'schedule': timedelta(seconds=30),
-        'schedule': timedelta(minutes=50)#crontab(minute='*/1',hour='*', day_of_month='*')
+            # 'schedule': timedelta(seconds=30),#timedelta(minutes=50)
+        'schedule': crontab( hour=4,day_of_month='*/1')
             #'args':
         }
     },

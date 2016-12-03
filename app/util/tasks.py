@@ -7,7 +7,7 @@ from flask_mail import Message
 from app.extensions import mail
 import logging as log
 
-#坑啊，include必须填，没仔细看文档，搞了几个小时才正常。
+#坑啊，include必须填，没仔细看文档。
 celery_app=celery.Celery('app',include=['app.util.tasks'])
 
 celery_app.config_from_object(config.CELERY_CONFIG)

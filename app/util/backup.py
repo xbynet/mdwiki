@@ -4,7 +4,7 @@ import os
 import sys, time
 import logging as log
 import oss2
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import islice
 import tarfile
 
@@ -175,6 +175,12 @@ def tarzipData():
 
     with tarfile.open(data,'w:gz') as f:
         f.add(dataPath,arcname='data',exclude=excludePath)
+    
+    #delete local files of prev 30days
+    filelist=[backupPath+os.sep+'data'+(datetime.now()+timedelta(-i-30)).strftime('%Y%m%d')+'.tar.gz' for i in range(10)]
+    for file in filelist:
+        if os.path.exists(file):
+            os.remove(file)
 
     return data
 

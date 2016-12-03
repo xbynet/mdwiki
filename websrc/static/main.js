@@ -57,7 +57,7 @@ $(function() {
     }
     localStorage.setItem('breadcrumb',JSON.stringify(breadcrumb));
     $.each(breadcrumb,function(i,e){
-        var replace='<li><a href="'+e.url+'" style="color: #fff;">'+e.name+'</a></li>';
+        var replace='<li><a href="'+e.url+'" style="color: #017E66;">'+e.name+'</a></li>';
         $('.topbreadcrumb').append(replace);
     });
      $('.topbreadcrumb').show();

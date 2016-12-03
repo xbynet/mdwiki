@@ -22,13 +22,45 @@ manager.add_command('db',MigrateCommand)
 def create_db():
 	db.create_all()
 
-@manager.command
-def init_admin():
-    user=user_datastore.create_user(email='xby@xbynet.net',password=encrypt_password("1"))
-    role=Role('admin','administrator role')
+@manager.option('-n','--name',help='username',required=True)
+@manager.option('-e','--email',help='email',required=True)
+@manager.option('-p','--password',help='password',required=True)
+def init_admin(name,email,password):
+    if name=='' or email=='' or password=='' or len(password)<6:
+        print('创建失败，相关参数为空，或密码长度小于6')
+        return
+    user=user_datastore.find_user(username=name,email=email)
+    if user is None:
+        user=user_datastore.create_user(username=name,email=email,password=encrypt_password(password))
+    
+    role=user_datastore.find_or_create_role('admin',description='administrator role')
+
     if user.roles is  None:
         user.roles=[]
     user.roles.append(role)
+    db.session.commit()
+
+@manager.option('-n','--name',help='username',required=True)
+@manager.option('-e','--email',help='email',required=True)
+@manager.option('-p','--password',help='password',required=True)
+@manager.option('-r','--roles',nargs='*',default=['editor'],help='roles separator by space')
+@manager.option('-d','--rolesDesc',nargs='*',default=['editor'],help='rolesdesc separator by space')
+def create_user(name,email,password,roles,rolesDesc):
+    #print('--------------------------------%s' % type(roles))
+    if len(roles)!=len(rolesDesc):
+        raise Exception('roles len not equals rolesDesc len')
+    if name=='' or email=='' or password=='' or len(password)<6:
+        print('创建失败，相关参数为空，或密码长度小于6')
+        return
+    user=user_datastore.find_user(username=name,email=email)
+    if user is None:
+        user=user_datastore.create_user(username=name,email=email,password=encrypt_password(password))
+    rolelist=[]
+
+    for index,rolename in enumerate(roles):
+        role=user_datastore.find_or_create_role(rolename,description=rolesDesc[index])
+        rolelist.append(role)
+    user.roles=rolelist
     db.session.commit()
 
 def run_beat(application):

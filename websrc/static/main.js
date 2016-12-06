@@ -1,4 +1,5 @@
 $(function() {
+
     // Back to top
     $('#back-to-top').click(function(e) {
         e.preventDefault();

@@ -71,8 +71,8 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True if DEBUG else False
 # Flask-Cache config
 ###########################
 # null,simple,memcached,redis,filesystem
-CACHE_TYPE = 'redis' if not DEBUG else 'null'
-CACHE_DEFAULT_TIMEOUT = 1 if DEBUG else 3 * 60 * 60
+CACHE_TYPE = 'redis' 
+CACHE_DEFAULT_TIMEOUT = 3600
 CACHE_KEY_PREFIX = 'mdwiki_cache_'
 # CACHE_REDIS_HOST='127.0.0.1'
 # CACHE_REDIS_PORT='6379'

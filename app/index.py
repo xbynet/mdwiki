@@ -23,7 +23,6 @@ def before_reuquest():
     session.permanent = True
     #By default in Flask, permanent_session_lifetime is set to 31 days.
     app.permanent_session_lifetime = timedelta(minutes=30)
-
     max_login_retry=5
     if (not getattr(g.identity,'user',None)) and request.path==url_for_security('login'):
         login_retry=session.get('login_retry',0)+1

@@ -34,6 +34,10 @@ ENABLE_PROXY_FIX = False
 # max upload size 100MB
 MAX_CONTENT_LENGTH = 1024 * 1024 * 100
 
+#Custom for redis session
+REDIS_HOST='localhost'
+REDIS_PORT=6379
+
 ###########################
 # Logging config File Path
 ###########################
@@ -69,13 +73,13 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True if DEBUG else False
 # null,simple,memcached,redis,filesystem
 CACHE_TYPE = 'redis' if not DEBUG else 'null'
 CACHE_DEFAULT_TIMEOUT = 1 if DEBUG else 3 * 60 * 60
-CACHE_KEY_PREFIX = 'xbysite_'
+CACHE_KEY_PREFIX = 'mdwiki_cache_'
 # CACHE_REDIS_HOST='127.0.0.1'
 # CACHE_REDIS_PORT='6379'
 # CACHE_REDIS_PASSWORD=''
 # CACHE_REDIS_DB=1 #0
 # redis://username:password@localhost:6379/0
-CACHE_REDIS_URL = 'redis://localhost:6379/1'
+CACHE_REDIS_URL = 'redis://'+REDIS_HOST+':'+str(REDIS_PORT)+'/1'
 
 ###########################
 # Flask-WTF config
@@ -98,7 +102,7 @@ LANGUAGES = {
 # Celery config
 ###########################
 CELERY_CONFIG={
-    'BROKER_URL' : 'redis://localhost:6379/0',
+    'BROKER_URL' : 'redis://'+REDIS_HOST+':'+str(REDIS_PORT)+'/0',
     #CELERY_RESULT_BACKEND = 'redis://localhost/0'
     'CELERY_TASK_SERIALIZER':'json',
     #CELERY_ACCEPT_CONTENT=['json']

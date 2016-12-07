@@ -40,7 +40,6 @@ def walkDir(dirname,dirlist=[]):
             if not os.path.exists(destPath):
                 os.makedirs(destPath)
             dirlist.append(fullpath)
-            walkDir(fullpath,dirlist)
 
 
 dirlist=[srcpath]

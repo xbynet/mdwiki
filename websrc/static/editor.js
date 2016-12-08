@@ -1,12 +1,17 @@
 $(function() {
-        //初始化关闭
-    window.addEventListener("beforeunload", function (e) {
-      var confirmationMessage = "要记得保存！你确定要离开我吗？";
-      (e || window.event).returnValue = confirmationMessage;     // 兼容 Gecko + IE
-      return confirmationMessage;     // 兼容 Gecko + Webkit, Safari, Chrome
+    window.isCloseHint = true;
+    //初始化关闭
+    window.addEventListener("beforeunload", function(e) {
+        if (window.isCloseHint) {
+            var confirmationMessage = "要记得保存！你确定要离开我吗？";
+            (e || window.event).returnValue = confirmationMessage; // 兼容 Gecko + IE
+            return confirmationMessage; // 兼容 Gecko + Webkit, Safari, Chrome
+        }
     });
     $("form:eq(1)").validate({
         submitHandler: function(form) {
+            window.isCloseHint=false;
+            
             form.submit();
         },
         rules: {
@@ -30,12 +35,13 @@ $(function() {
         toolbar: ["bold", "italic", "strikethrough", "heading", "heading-1", "heading-2", "heading-3", "code", "quote", "unordered-list", "ordered-list", "clean-block", "link", "image", "table", "horizontal-rule", "side-by-side", "preview", "fullscreen", "guide", {
             name: "save",
             action: function(editor) {
-                if($('form:eq(1)').valid()){
-                    $('form:eq(1)').submit();    
-                }else{
+                if ($('form:eq(1)').valid()) {
+                    window.isCloseHint=false;
+                    $('form:eq(1)').submit();
+                } else {
                     toastr.error("标题必须填写");
                 }
-                
+
             },
             className: "fa fa-save",
             title: "保存",
@@ -185,7 +191,7 @@ $(function() {
         var initTags = $('#tags').val() ? $('#tags').val() : '';
         var toggleTag = new Taggle($('.tagsDiv')[0], {
             placeholder: '请输入标签，逗号分隔',
-            tags: initTags?initTags.split(','):[],
+            tags: initTags ? initTags.split(',') : [],
 
             onTagAdd: function(event, tag) {
                 // text.innerHTML = 'You just added ' + tag;

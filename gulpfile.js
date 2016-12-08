@@ -48,9 +48,9 @@ gulp.task('jsmin', function (cb) {
 	}
 	else{
 		return gulp.src([SRC_DIR+STATIC_DIR_NAME+'/**/*.js'])
-		.pipe(sourcemaps.init())
-        .pipe(uglify({mangle: {except: ['require' ,'exports' ,'module' ,'$']}})) //排除混淆关键字
-		.pipe(sourcemaps.write('.'))
+		//.pipe(sourcemaps.init())
+       // .pipe(uglify({mangle: {except: ['require' ,'exports' ,'module' ,'$']}})) //排除混淆关键字
+	//	.pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(DEST_DIR+STATIC_DIR_NAME));
 	}
 	
@@ -67,10 +67,10 @@ gulp.task('cssmin', function () {
 		return gulp.src(SRC_DIR+STATIC_DIR_NAME+'/**/*.css')
 		//.pipe(concat('main.css'))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-		.pipe(sourcemaps.init())
+		//.pipe(sourcemaps.init())
 		
-        .pipe(cssmin())
-		.pipe(sourcemaps.write('.'))
+        //.pipe(cssmin())
+		//.pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(DEST_DIR+STATIC_DIR_NAME));
 	}
     

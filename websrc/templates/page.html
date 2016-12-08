@@ -55,7 +55,7 @@
 
 {% endblock content %}
         {% block endscriptjs %}
-
+<script src="{{ url_for('static', filename='lib/Autolinker.min.js') }}"></script>
 <script src="{{ url_for('static', filename='page.js') }}"></script> 
  {% endblock endscriptjs %}
 

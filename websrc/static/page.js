@@ -1,4 +1,12 @@
 $(function() {
+    var linktext=Autolinker.link($("#postContent").html(),{
+        className:'lincl',
+        urls:{
+            tldMatches:false
+        }
+    });
+    $("#postContent").html(linktext);
+
     $('pre').each(function(i, e) {
         hljs.highlightBlock(e);
     });

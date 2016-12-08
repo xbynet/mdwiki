@@ -11,6 +11,9 @@ label.error{
 .wordbreak {
     word-break: break-all;
 }
+.link-green{
+  color: #017E66;
+}
 body,html{
     height: 100%;
   }

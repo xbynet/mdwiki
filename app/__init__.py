@@ -9,14 +9,14 @@ from app import config
 from app.factory import create_app
 from app import util
 from app.util import make_celery
-
+from app.views.forms import LoginForm
 app=create_app()
 #celery_app = make_celery(app)
 
 # Setup Flask-Security
 
 from app.model.userrole import user_datastore
-security = Security(app, user_datastore)
+security = Security(app, user_datastore,login_form=LoginForm)
 # security.init_app(app, user_datastore)
 security.login_manager.login_message_category = 'danger'
 security.login_manager.login_message = '请登录'

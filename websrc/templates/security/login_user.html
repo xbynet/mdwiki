@@ -20,6 +20,11 @@
 				<div class="form-group">
 				  {{ render_field_with_errors(login_user_form.password,type="password",class="form-control ",placeholder="Password") }}
 				</div>
+                <div class="form-group form-inline">
+                {{ render_field_with_errors(login_user_form.code,class="form-control ",placeholder="验证码") }}
+                  <img id="captcha" src="{{ url_for('views.getCaptcha') }}" style="height: 34px;"/>
+                </div>
+                
 				<span class="button-checkbox">
 					<button type="button" class="btn" data-color="info">记住我?</button>
                     <input type="checkbox" name="remember" id="remember_me" class="hidden">

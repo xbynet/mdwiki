@@ -55,11 +55,25 @@ $(function(){
 		}
 		init();
 	});
+	
+	$("#captcha").on('click',function(){
+		var $img=$("#captcha");
+		var src=$img.attr('src');
+		var i=src.indexOf('?d=');
+		if(i>0){
+			src=src.substring(0,i);
+		}
+		var d=new Date();
+		$img.attr('src',src+'?d='+d.getTime());
+	});
+	
+
 	$("#loginForm").validate({
 		submitHandler: function(form) {
 			form.submit();
 		},
 		rules: {
+			code:"required",
 			password: "required",
 			email: {
 				required: true,
@@ -67,6 +81,7 @@ $(function(){
 			}
 		},
 		messages: {
+			code: "必填",
 			password: "必填",
 			email: {
 				required: "必填",

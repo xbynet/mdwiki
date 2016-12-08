@@ -2,9 +2,10 @@ import os,uuid,logging
 from .forms import UploadForm
 from . import views
 from app import config
-from flask import request,render_template,redirect,url_for,current_app,jsonify
+from flask import request,render_template,redirect,url_for,current_app,jsonify,send_file,session
 from werkzeug.utils import secure_filename
-
+from app.util import captcha
+from io import BytesIO
 
 UPLOAD_DIR=os.path.join(config.DATA_DIR,'upload')
 
@@ -29,3 +30,13 @@ def upload():
 
 
 
+@views.route('/captcha')
+def getCaptcha():
+    def serve_pil_image(pil_img):
+        img_io = BytesIO()
+        pil_img.save(img_io, 'PNG')
+        img_io.seek(0)
+        return send_file(img_io, mimetype='image/png',cache_timeout=0)
+    code_img=captcha.createCaptcha()
+    session['captcha']=code_img[1]
+    return serve_pil_image(code_img[0])

@@ -2,9 +2,9 @@
 
    <!--  {{ field.label }}  -->{{ field(**kwargs)|safe }}
    {% if field.errors %}
-     <p class="text-danger">
+     <span class="text-danger">
         {{ ','.join(field.errors) }}
-      </p>
+      </span>
    {% endif %}
 
 {% endmacro %}

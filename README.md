@@ -1,6 +1,8 @@
 # mdwiki
 markdown wiki by python with flask 
 
+![](home.png)
+
 how to test:
 
 pip install -r requirements.txt

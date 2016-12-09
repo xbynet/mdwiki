@@ -39,10 +39,11 @@ def before_reuquest():
             session['login_retry'] = login_retry
             #使用redis来限制ip登录限制
             key=session_ip_prefix+ip
-            redis.incr(key)
+            with redis.pipeline() as pipe:
+                pipe.incr(key).expire(key,2*3600).execute()
             #print(type(redis.get(key)))
             ip_retry_count=int(redis.get(key))
-            redis.setex(key,2*3600,ip_retry_count)
+            
         
             if login_retry>max_login_retry or ip_retry_count>max_login_retry:
                 return render_template('hintInfo.html',msg='登录次数超出限制,请2小时后重试')

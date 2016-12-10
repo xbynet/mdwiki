@@ -4,6 +4,7 @@ import tarfile
 from contextlib import contextmanager
 from fabric.contrib.files import exists
 
+
 #$ fab -f fabfile.py -H localhost,remote host_type
 def host_type():
     run('uname -s')
@@ -12,6 +13,9 @@ env.user= os.environ.get('USER','')
 env.hosts= os.environ.get('HOST','').split(',')
 env.password= os.environ.get('PASSWORD','')
 env.sudo_password= os.environ.get('PASSWORD','')
+
+
+shouldUpload= False if os.environ.get('upload','') else True
 
 active='source /home/xby/venv/mdwiki/bin/activate'
 
@@ -49,7 +53,7 @@ def deploy():
     localsize=os.path.getsize(distFile)
     remotesize=0
     #check if should upload again if there is a same file
-    if exists(remote_tmp):
+    if exists(remote_tmp) and shouldUpload:
         remotesize=int(run("stat -c '%s' {0}".format(remote_tmp)))
         print(str(localsize)+":"+str(remotesize))
     if localsize!=remotesize:

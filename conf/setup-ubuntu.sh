@@ -23,7 +23,8 @@ sudo apt-get install libssl-dev libffi-dev python-dev python3-dev -y
 
 
 #sudo apt-get install gunicorn -y
-sudo apt-get install libevent-dev -y
+sudo apt-get install libevent-dev libssl-dev libffi-dev libsasl2-dev libpq-dev  libxml2-dev libxslt1-dev libldap2-dev  -y
+
 #sudo pip3 install greenlet
 #sudo pip3 install gevent
 

@@ -44,8 +44,6 @@ lxml==3.6.4
 Mako==1.0.5
 Markdown==2.6.7
 MarkupSafe==0.23
-matplotlib==1.5.3
-numpy==1.11.2+mkl
 oss2==2.2.2
 parsel==1.0.3
 passlib==1.6.5
@@ -62,7 +60,6 @@ queuelib==1.4.2
 redis==2.10.5
 requests==2.11.1
 sasl==0.2.1
-scipy==0.18.1
 Scrapy==1.2.0
 service-identity==16.0.0
 simplejson==3.9.0

@@ -9,13 +9,13 @@ chdir='/opt/www/mdwiki'
 #daemon=False
 #group = "nginx"
 loglevel = "info"
-errorlog = chdir+"/log/gunicorn/error.log"
-accesslog= chdir+"/log/gunicorn/access.log"
+#errorlog = chdir+"/log/gunicorn/error.log"
+#accesslog= chdir+"/log/gunicorn/access.log"
 raw_env = [
-   'aliyun_api_key=value',
-   'aliyun_secret_key=value',
-   'MAIL_PASSWORD=value',
-   'SECRET_KEY=mysecretkey'
+   r'aliyun_api_key=value',
+   r'aliyun_secret_key=value',
+   r'MAIL_PASSWORD=value',
+   r'SECRET_KEY=mysecretkey'
 ]
 #ssl
 #keyfile=

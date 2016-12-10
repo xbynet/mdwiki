@@ -4,7 +4,14 @@
 #supervisorctl start all
 #supervisorctl stop all
 #
-
+sudo dd if=/dev/zero of=/swapfile bs=1G count=2
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+#sudo swapon -s
+##free -m
+sudo vim /etc/fstab
+#/swapfile       none    swap    sw      0       0 
 
 sudo useradd -rm -s /bin/bash xby
 sudo adduser xby sudo

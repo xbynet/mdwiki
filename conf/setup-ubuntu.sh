@@ -26,7 +26,7 @@ sudo apt-get update
 sudo apt-get install nginx aria2 axel wget curl -y
 sudo apt-get install -y redis-server
 sudo apt-get install python3-pip -y
-sudo apt-get install libssl-dev libffi-dev python-dev python3-dev -y
+sudo apt-get install enca convmv libssl-dev libffi-dev python-dev python3-dev -y
 
 
 #sudo apt-get install gunicorn -y

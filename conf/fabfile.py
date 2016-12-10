@@ -32,9 +32,10 @@ def virtualenv():
 if not os.path.exists(distPath):
     os.mkdir(distPath)
 
-def pack():
+def pack(excludes=[]):
+
     def ecludefiles(path):
-        for name in ['venv','node_modules','websrc','__pycache__','.git','.idea','dist']:
+        for name in ['venv','node_modules','websrc','__pycache__','.git','.idea','dist']+excludes:
             if path.find(os.sep+name)>0:
                 return True
         return False
@@ -45,8 +46,12 @@ def pack():
         f.add(srcPath,arcname='mdwiki',exclude=ecludefiles)
 
 def deploy():
-    #local pack dist file
-    pack()
+    
+    if exists('/opt/www/mdwiki/data',use_sudo=True):
+        pack(excludes=['data'])
+    else: 
+        #local pack dist file
+        pack()
     
     remote_tmp='/tmp/mdwiki.tar.gz'
 

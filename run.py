@@ -74,8 +74,8 @@ def run_work(application):
 def startwork():
     '''
     act like 
-    nohup celery app.util.tasks.celery_app beat &
-    nohup celery -A app.util.tasks.celery_app worker &
+    nohup celery beat -A app.util.tasks.celery_app  -f celery.beat.log -l info &
+    nohup celery worker -A app.util.tasks.celery_app  -f celery.worker.log -l info &
     '''
     from app.util import  tasks
     application = celery.current_app._get_current_object()

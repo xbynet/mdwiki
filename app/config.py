@@ -27,8 +27,8 @@ if not os.path.exists(PAGE_DIR):
 ###########################
 # Flask Config
 ###########################
-DEBUG = True
-SECRET_KEY = '\xe0N\rl\x8f\xe3\x13\xa6\xdd\r\xea\xd1\x03\x9f+\x1f3\xa3\x18\x1eia\xa2\xbf'
+DEBUG = False
+SECRET_KEY = '\xe0N\rl\x8f\xe3\x13\xa6\xdd\r\xea\xd1\x03\x9f+\x1f3\xa3\x18\x1eia\xa2\xbf' if DEBUG else os.environ.get('SECRET_KEY',None)#
 # Extract and use X-Forwarded-For/X-Forwarded-Proto headers?
 ENABLE_PROXY_FIX = False
 # max upload size 100MB
@@ -115,11 +115,11 @@ CELERY_CONFIG={
         'bak-every-day': {
         'task': 'tasks.backup',
             # 'schedule': timedelta(seconds=30),#timedelta(minutes=50)
-        'schedule': crontab( hour=4,day_of_month='*/1')
+        'schedule': crontab( hour='4',day_of_month='*/1')
             #'args':
         }
     },
-    'loglevel': 'DEBUG',
+    'loglevel': 'DEBUG' if DEBUG else 'INFO',
     'traceback': True,
     'include':['app.util.tasks']
 }
@@ -175,6 +175,6 @@ oss = {
     'api_key': os.environ.get('aliyun_api_key', ''),
     'secret_key': os.environ.get('aliyun_secret_key', ''),
     'bucket_name': 'mdwikidata',
-    'inner_endpoint': None,  # 'http://oss-cn-shenzhen-internal.aliyuncs.com',
-    'out_endpoint': 'http://oss-cn-shenzhen.aliyuncs.com'
+    'inner_endpoint': None if DEBUG else 'http://oss-cn-beijing-internal.aliyuncs.com',  
+    'out_endpoint': 'http://oss-cn-beijing.aliyuncs.com'
 }

@@ -78,3 +78,6 @@ Whoosh==2.7.4
 WTForms==2.1
 zope.interface==4.3.2
 pillow==3.4.1
+greenlet==0.4.10
+gevent==1.1.2
+gunicorn==19.6.0

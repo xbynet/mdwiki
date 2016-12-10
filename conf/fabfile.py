@@ -1,24 +1,36 @@
 from fabric.api import *
 import os,sys
 import tarfile
+from contextlib import contextmanager
+from fabric.contrib.files import exists
+
 #$ fab -f fabfile.py -H localhost,remote host_type
 def host_type():
     run('uname -s')
 
-env.user='xxx'
-env.hosts=['192.168.1.2']
-env.password='123'
-env.sudo_password='123'
+env.user= os.environ.get('USER','')
+env.hosts= os.environ.get('HOST','').split(',')
+env.password= os.environ.get('PASSWORD','')
+env.sudo_password= os.environ.get('PASSWORD','')
 
-srcPath='mdwiki'
-distPath='dist'
-distFile='dist'+os.sep+'mdwiki.tar.gz'
+active='source /home/xby/venv/mdwiki/bin/active'
+
+srcPath=r'C:\Users\taojw\Desktop\pywork\mdwiki'
+distPath=r'C:\Users\taojw\Desktop\pywork\mdwiki\dist'
+distFile=distPath+os.sep+'mdwiki.tar.gz'
+
+@contextmanager
+def virtualenv():
+    with prefix(active):
+        yield
+
+
 if not os.path.exists(distPath):
     os.mkdir(distPath)
 
 def pack():
     def ecludefiles(path):
-        for name in ['venv','node_modules','websrc','__pycache__','.git','.idea']:
+        for name in ['venv','node_modules','websrc','__pycache__','.git','.idea','dist']:
             if path.find(os.sep+name)>0:
                 return True
         return False
@@ -34,23 +46,44 @@ def deploy():
     
     remote_tmp='/tmp/mdwiki.tar.gz'
 
-    sudo('rm -f %s' % remote_tmp)
-    # upload dist file
-    put(distFile,remote_tmp)
-    #delete previous bak
-    sudo('rm -rf /opt/www/mdwiki_bak')
+    localsize=os.path.getsize(distFile)
+    remotesize=0
+    #check if should upload again if there is a same file
+    if exists(remote_tmp):
+        remotesize=int(run("stat -c '%s' {0}".format(remote_tmp)))
+        print(str(localsize)+":"+str(remotesize))
+    if localsize!=remotesize:
+        sudo('rm -f %s' % remote_tmp)
+        # upload dist file
+        put(distFile,remote_tmp)
+    if not exists('/opt/www'):
+        sudo('mkdir /opt/www')
+        sudo('chown www-data:www-data /opt/www')
+
     #stop app and bak now
     with settings(warn_only=True):
+        #delete previous bak
+        sudo('rm -rf /opt/www/mdwiki_bak')
         sudo('supervisorctl stop all')
-    sudo('mv /opt/www/mdwiki /opt/www/mdwiki_bak')
+        if exists('/opt/www/mdwiki'):
+            sudo('mv /opt/www/mdwiki /opt/www/mdwiki_bak')
 
     sudo('tar -zxvf /tmp/mdwiki.tar.gz -C /opt/www/')
+
     with cd('/opt/www/'):
         #replace data dir
-        sudo('rm -rf mdwiki/data')
-        sudo('cp -R mdwiki_bak/data mdwiki/')
+        if exists('mdwiki_bak/data'):
+            sudo('rm -rf mdwiki/data')
+            sudo('cp -R mdwiki_bak/data mdwiki/')
+        if exists('mdwiki_bak/app.db'):
+            sudo('cp mdwiki_bak/app.db mdwiki/')
 
-        sudo('chown -R nginx:nginx mdwiki')
+        sudo('chown -R www-data:www-data mdwiki')
+
+        with virtualenv():
+            run('pip3 install -r  mdwiki/requirements.txt')
+
+    sudo('rm -f %s' % remote_tmp)
     sudo('supervisorctl start all')
 
 #in your local shell run 'fab deploy' command

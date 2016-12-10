@@ -13,7 +13,7 @@ env.hosts= os.environ.get('HOST','').split(',')
 env.password= os.environ.get('PASSWORD','')
 env.sudo_password= os.environ.get('PASSWORD','')
 
-active='source /home/xby/venv/mdwiki/bin/active'
+active='source /home/xby/venv/mdwiki/bin/activate'
 
 srcPath=r'C:\Users\taojw\Desktop\pywork\mdwiki'
 distPath=r'C:\Users\taojw\Desktop\pywork\mdwiki\dist'

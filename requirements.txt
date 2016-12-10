@@ -15,7 +15,6 @@ constantly==15.1.0
 crcmod==1.7
 cryptography==1.5.3
 cssselect==1.0.0
-cx-Oracle==5.2.1
 cycler==0.10.0
 dominate==2.2.1
 Flask==0.11.1

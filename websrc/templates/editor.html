@@ -18,7 +18,7 @@
             {{ form.content(class="form-control",rows="15",id="textArea1") }}
 			{% if not isSidebar %}
 			<div style="display:none;">
-			{{ input(form.tags, id="tags",placeholder="标签,逗号分隔", class="form-control") }}
+			{{ form.tags(class="form-control") }}
 			</div>
 			<div class="tagsDiv input textarea clearfix"></div>
 			{# <div class="colorgraph"></div> #}

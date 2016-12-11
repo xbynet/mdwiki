@@ -9,7 +9,7 @@ import logging as log
 from app.views.pages import post_get
 from app.util import exceptions
 from app.util.utilRedis import redis_client as redis
-
+from app.factory import db
 
 session_ip_prefix='session_ip_'
 
@@ -25,7 +25,7 @@ def inject_global_args():
     return app.config['G_SHARE']
 
 @app.before_request
-def before_reuquest():
+def before_request():
     #flask sessions expire once you close the browser unless you have a permanent session
     session.permanent = True
     #By default in Flask, permanent_session_lifetime is set to 31 days.
@@ -57,6 +57,15 @@ def argsErrorHandle(e):
         return jsonify({'status':'fail','msg':e.msg})
     flash(e.msg,'danger')
     return render_template('hintInfo.html')
+
+
+@app.teardown_request
+def dbsession_clean(exception=None):
+    try:
+        db.session.remove()
+    finally:
+        pass
+
 
 @app.route('/')
 @app.route('/home')

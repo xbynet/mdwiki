@@ -17,6 +17,7 @@ from app.model import vo
 from app.util import searchutil
 import bleach
 
+
 pages=Blueprint('pages',__name__,url_prefix='/pages')
 
 # @pages.route('/',methods=['GET'])
@@ -80,12 +81,14 @@ def post_edit(path):
     if not os.path.exists(abspath):
         flash("文章不存在",'warning')
         return render_template('hintInfo.html')
-    post=Post.query.filter_by(userId=str(current_user.id or os.urandom()),location=path).first()
-    if not post and not ('admin' in current_user.roles):
+    isAdmin=util.checkAdmin()
+
+    post=Post.query.filter_by(location=path).first()
+
+    if post and post.userId!=str(current_user.id) and (not isAdmin):
         flash("您没有权限编辑此文章!",'warning')
         return render_template('hintInfo.html')
-    if not post:
-        post=Post(location=path)
+
     with open(abspath,encoding='UTF-8') as f:
         content=f.read()
             # print('fcontent'+fcontent)
@@ -93,9 +96,15 @@ def post_edit(path):
     meta = content.split('\n\n', 1)[0]
     meta=util.parsePostMeta(meta) # a dict
     content = content.split('\n\n', 1)[1]
+    
+    tags=''
+    location=path
 
+    if post:
+        tags=','.join([t.name for t in post.tags])
+        location = post.location
     form=PostForm(title=meta.get('title',''),content=content,
-        location=post.location,tags=','.join([t.name for t in post.tags]),
+        location=location,tags=tags,
         createAt=meta.get('createAt',''),modifyAt=meta.get('modifyAt',' '))
     return render_template('editor.html',isPost=True,action=url_for('.post_save'),form=form)
 
@@ -108,12 +117,13 @@ def post_save():
         if not checked:
             flash('文章地址不合法', 'danger')
             return render_template('hintInfo.html')
-        postExist=os.path.exists(util.getAbsPostPath(location))    
-        post=Post.query.filter_by(userId=str(current_user.id),location=location).first()
-        isNew=True if not post else False
+        postExist=os.path.exists(util.getAbsPostPath(location))
+        post=Post.query.filter_by(location=location).first()
+        isAdmin=util.checkAdmin()
 
-        if isNew and postExist and not ('admin' in current_user.roles):
-            flash("文章早已存在",'info')
+        isNew=True if not post else False
+        if isNew and postExist and not isAdmin:
+            flash("文章早已存在,您没有权限操作",'info')
             return redirect(url_for('.post_get',path=location))
 
         meta=dict(title=form.title.data,author=current_user.username or current_user.email,
@@ -180,14 +190,19 @@ def post_save():
 @pages.route('/delete/<path:path>',methods=['GET','POST'])
 @login_required
 def post_delete(path):
-    post=Post.query.filter_by(location=path,userId=str(current_user.id)).first()
-    if post:
-        log.debug(post.location+post.userId)
-        db.session.delete(post)
+    isAdmin=util.checkAdmin()
+    if isAdmin:
+        post=Post.query.filter_by(location=path).first()
+    else:
+        post=Post.query.filter_by(location=path,userId=str(current_user.id)).first()
 
+    path=util.urlDirPathFormat(path)
+    abspath=util.getAbsPostPath(path)
+    if post or os.path.exists(abspath):
+        if post:
+            log.debug(post.location+post.userId)
+            db.session.delete(post)
 
-        path=util.urlDirPathFormat(path)
-        abspath=util.getAbsPostPath(path)
         if os.path.exists(abspath):
             os.remove(abspath)
 
@@ -198,9 +213,8 @@ def post_delete(path):
             flash("删除成功！", "success")
         except AttributeError as e:
             flash("发生内部错误 %s" % str(e),'danger')
-
     else:
-        flash("文章不存在!","warning")
+        flash("文章不存在或无权限编辑!","warning")
     return render_template('hintInfo.html')
 
 @pages.route("/list/<string:tagName>/<int:curNum>")

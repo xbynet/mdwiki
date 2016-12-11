@@ -35,7 +35,7 @@ $(function() {
     //toc
     $('.mdwiki_toc_container h3').on('click', function() {
         $('.mdwiki_toc_container .collapse').collapse('toggle');
-         testOneAnim('.mdwiki_toc_container','pulse');
+         //testOneAnim('.mdwiki_toc_container','pulse');
     });
     $(window).scroll(function() {
         if ($(document).scrollTop() == 0) {

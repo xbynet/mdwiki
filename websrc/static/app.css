@@ -457,7 +457,7 @@ ul.taggle_list>li>input.taggle_input:focus{
     margin-top: 20px;
 }
 .img-delete{
-    background-image: url('/static/lib/fancybox/fancybox_sprite.png');
+    background-image: url('/static/lib/fancyBox/fancybox_sprite.png');
     background-size: 44px 152px;
     position: absolute;
     top: -18px;

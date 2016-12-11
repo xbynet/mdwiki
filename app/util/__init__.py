@@ -7,6 +7,7 @@ import re
 import tarfile
 from celery import Celery
 from flask import current_app
+from flask_login import current_user
 
 from datetime import datetime
 
@@ -242,4 +243,8 @@ def objToDict(obj):
        if not name.startswith('__')  and not callable(name))
     return objDict 
 
-
+def checkAdmin():
+    isAdmin=False
+    if 'admin' in [ role.name for role in current_user.roles]:
+        isAdmin=True
+    return isAdmin

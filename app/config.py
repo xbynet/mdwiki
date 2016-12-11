@@ -27,7 +27,7 @@ if not os.path.exists(PAGE_DIR):
 ###########################
 # Flask Config
 ###########################
-DEBUG = False
+DEBUG = False if os.environ.get('SECRET_KEY',None) else True
 SECRET_KEY = '\xe0N\rl\x8f\xe3\x13\xa6\xdd\r\xea\xd1\x03\x9f+\x1f3\xa3\x18\x1eia\xa2\xbf' if DEBUG else os.environ.get('SECRET_KEY',None)#
 # Extract and use X-Forwarded-For/X-Forwarded-Proto headers?
 ENABLE_PROXY_FIX = False

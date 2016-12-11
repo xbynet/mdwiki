@@ -85,6 +85,7 @@ def deploy():
             sudo('rm -rf mdwiki/data')
             sudo('cp -R mdwiki_bak/data mdwiki/')
         if exists('mdwiki_bak/app.db'):
+            sudo('rm -rf mdwiki/app.db')
             sudo('cp mdwiki_bak/app.db mdwiki/')
 
         sudo('chown -R www-data:www-data mdwiki')

@@ -73,7 +73,7 @@ def updateDocument(doclist):
 def deleteDocument(termlist):
     writer = ix.writer()
     for term in termlist:
-        writer.delete_by_term(term.fieldName, term.text)
+        writer.delete_by_term(term["fieldName"], term['text'])
     writer.commit()
 
 

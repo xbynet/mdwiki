@@ -181,18 +181,24 @@ def post_save():
 @login_required
 def post_delete(path):
     post=Post.query.filter_by(location=path,userId=str(current_user.id)).first()
-    log.debug(post.location+post.userId)
     if post:
+        log.debug(post.location+post.userId)
         db.session.delete(post)
-        db.session.commit()
-        
+
+
         path=util.urlDirPathFormat(path)
         abspath=util.getAbsPostPath(path)
         if os.path.exists(abspath):
             os.remove(abspath)
-        flash("删除成功！","success")
+
         term=dict(fieldName='location',text=path)
-        searchutil.deleteDocument([term])
+        try:
+            searchutil.deleteDocument([term])
+            db.session.commit()
+            flash("删除成功！", "success")
+        except AttributeError as e:
+            flash("发生内部错误 %s" % str(e),'danger')
+
     else:
         flash("文章不存在!","warning")
     return render_template('hintInfo.html')

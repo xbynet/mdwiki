@@ -41,7 +41,7 @@ REDIS_PORT=6379
 ###########################
 # Logging config File Path
 ###########################
-LOG_CFG_FILE = os.path.join(BASE_DIR, 'logging.json')
+LOG_CFG_FILE = os.path.join(os.path.dirname(__file__), 'logging.json')
 LOG_MAIL_RECIEVER = "xbynet@163.com"
 
 ###########################

@@ -1,15 +1,18 @@
 import json
-import logging
-import os
+
+import logging.config
+import os,sys
 from logging.handlers import SMTPHandler
 
 from flask_security import Security
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from app import config
 from app.factory import create_app
 from app import util
 
 from app.views.forms import LoginForm
+
 app=create_app()
 
 
@@ -44,3 +47,5 @@ from . import index
 from .views import all_blueprint
 for bp in all_blueprint:
     app.register_blueprint(bp)
+
+#logging.warn('api_key %s' % os.environ.get('aliyun_api_key', ''))

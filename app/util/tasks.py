@@ -1,3 +1,5 @@
+import sys,os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..')))
 import celery
 from celery.bin import worker as celery_worker
 from app import config,app
@@ -22,6 +24,7 @@ def sendMail(content):
 def backupDataTask():
     #datapath='/opt/www/mdwiki/data'+datetime.now().strftime('%Y%m%d')+'.tar.gz'
     datapath=backup.tarzipData()
+
     oss=backup.AliyunOSS(**config.oss)
     isSuccess=oss.resumableUpload(datapath)
     

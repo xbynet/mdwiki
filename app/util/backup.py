@@ -2,6 +2,7 @@
 """
 import os
 import sys, time
+#sys.path.append('C:\\Users\\taojw\\Desktop\\pywork\\mdwiki')
 import logging as log
 import oss2
 from datetime import datetime, timedelta
@@ -33,6 +34,7 @@ class AliyunOSS(object):
             inner_endpoint (None, optional): Description
             out_endpoint (None, optional): Description
         """
+
         self.auth = oss2.Auth(api_key,
                               secret_key)
         self.bucket = oss2.Bucket(
@@ -188,7 +190,9 @@ def tarzipData():
 
 
 if __name__ == '__main__':
-    alioss = AliyunOSS()
-    alioss.resumableUpload(r'F:\workspace\nginx\222.zip')
-    alioss.listFiles()
-    print(alioss.getDownloadUrl('222.zip'))
+    
+
+    oss=AliyunOSS(**config.oss)
+    oss.resumableUpload(r'F:\workspace\nginx\nginx.exe')
+    oss.listFiles()
+    #print(oss.getDownloadUrl('222.zip'))

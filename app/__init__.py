@@ -8,10 +8,10 @@ from flask_security import Security
 from app import config
 from app.factory import create_app
 from app import util
-from app.util import make_celery
+
 from app.views.forms import LoginForm
 app=create_app()
-#celery_app = make_celery(app)
+
 
 # Setup Flask-Security
 

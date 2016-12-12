@@ -13,39 +13,7 @@ from datetime import datetime
 
 from app import config
 from . import Constant
-
-
-def make_celery(app):
-    """init celery instance app 
-    
-    Args:
-        app (TYPE): Description
-    """
-    #celery = Celery(app.import_name)
-    from app.extensions import celery_app
-    celery_app.conf.update(app.config)
-    TaskBase = celery_app.Task
-    class ContextTask(TaskBase):
-        """Summary
-        
-        Attributes:
-            abstract (bool): Description
-        """
-        abstract = True
-        def __call__(self, *args, **kwargs):
-            """Summary
-            
-            Args:
-                *args (TYPE): Description
-                **kwargs (TYPE): Description
-            
-            Returns:
-                TYPE: Description
-            """
-            with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
-    celery_app.Task = ContextTask
-    return celery_app
+import platform
 
 class SidebarInit():
     """Summary
@@ -53,11 +21,10 @@ class SidebarInit():
     @classmethod
     def initSidebar(cls):
         """Summary
-        
         Returns:
             TYPE: Description
         """
-        sidebar=current_app.config['G_SHARE']['sidebar']=[]
+        sidebar=config.G_SHARE['sidebar']=[]
         with open(Constant.SIDEBAR_PATH,'r',encoding='UTF-8') as f:
             for line in f:
                 # line=f.readline() # #连接:名字:图标名，形式
@@ -248,3 +215,11 @@ def checkAdmin():
     if 'admin' in [ role.name for role in current_user.roles]:
         isAdmin=True
     return isAdmin
+
+def checkOS():
+    """check operator system
+    
+    Returns:
+        str: windows or linux
+    """
+    return platform.system().lower()

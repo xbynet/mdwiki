@@ -166,7 +166,16 @@ SECURITY_CHANGEABLE = True  # 是否允许密码修改，默认为False。如果
 # SECURITY_RESET_PASSWORD_WITHIN    密码重置邮件链接失效时间，默认5 days.
 # SECURITY_DEFAULT_REMEMBER_ME  默认为False，是否允许记住我功能。
 
-
+######################
+#Menu
+#######################
+G_SHARE = \
+        { \
+            'title': APP_NAME, \
+            'menus': [{'name': '标签', 'icon': 'tags', 'type': 0, 'link': '/pages/tag/list', 'active': ''}, \
+                      {'name': '侧边栏', 'icon': 'tags', 'type': 0, 'link': '/sidebar/edit', 'active': ''}], \
+            'sidebar': [] \
+        }
 
 ###########################
 # aliyun oss

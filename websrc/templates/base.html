@@ -10,6 +10,7 @@
     <title>{{ title }}</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
 {#     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap-material-design.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/ripples.min.css') }}">
  #}
@@ -20,6 +21,9 @@
 
 
     <link rel="stylesheet" href="{{ url_for('static', filename='lib/simplemde/highlight.min.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/simplemde/darcula.css') }}"> 
+
+
     {% block style %}
     {% endblock style %}
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='animate.min.css') }}">
@@ -38,8 +42,8 @@
 {% include "sidebar.html" %}
 {% endblock sidebar %}
 
-    <div class="main ">
-        <div class="container" style="margin-bottom: 100px;">
+    <div class="container main  ">
+        <div class="" style="margin-bottom: 100px;">
 <div>
 
 <ol class="topbreadcrumb breadcrumb" style="padding: 4px 6px; margin-bottom: 5px;background-color: #fff;display: none;">

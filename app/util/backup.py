@@ -9,7 +9,7 @@ from itertools import islice
 import tarfile
 
 from app import config
-
+from . import checkOS
 
 class AliyunOSS(object):
     """Aliyun oss2 bakcup
@@ -71,6 +71,7 @@ class AliyunOSS(object):
             try:
                 oss2.resumable_upload(self.bucket, path.rsplit(os.sep, 1)[1], path, progress_callback=self.percentage,
                                       # store=oss2.ResumableStore(root='/tmp'),
+                                      store=oss2.ResumableStore(root='/tmp' if checkOS()=='linux' else config.BASE_DIR),
                                       multipart_threshold=1024 * 1024,
                                       part_size=part_size,
                                       num_threads=4)

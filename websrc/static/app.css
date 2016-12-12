@@ -466,3 +466,30 @@ ul.taggle_list>li>input.taggle_input:focus{
     height: 36px;
     cursor: pointer;
 }
+.widget-codetool {
+    position: relative;
+    margin-top: 18px;
+    margin-top: 0;
+
+}
+.widget-codetool--inner {
+    cursor: pointer;
+    white-space: normal;
+    position: absolute;
+    top: -10px;
+    right: 0;
+    z-index: 1;
+    height: 24px;
+/*    background-color: rgba(0,0,0,.75);
+*/    padding: 0 5px;
+}
+.widget-codetool--inner span{
+    color: #2aa198;
+    background-color: #F3F3F3;
+}
+.widget-codetool--inner:hover span{
+  background-color: transparent;  
+}
+.codesnipshit{
+  margin-right: 20px;
+}

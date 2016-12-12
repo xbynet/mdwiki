@@ -7,6 +7,8 @@ import os
 from .forms import SidebarForm
 from . import views
 from app.util import Constant,SidebarInit
+
+
 @views.route('/sidebar/edit')
 @login_required
 # @roles_accepted('admin', 'editor')

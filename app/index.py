@@ -6,8 +6,10 @@ from flask_security import url_for_security
 from app import  app
 from flask import render_template, redirect, request, flash, url_for, abort
 import logging as log
+
+from app import config
 from app.views.pages import post_get
-from app.util import exceptions
+from app.util import exceptions,SidebarInit
 from app.util.utilRedis import redis_client as redis
 from app.factory import db
 
@@ -22,7 +24,7 @@ def logoutSignalHandler(sender,user):
 
 @app.context_processor
 def inject_global_args():
-    return app.config['G_SHARE']
+    return config.G_SHARE
 
 @app.before_request
 def before_request():

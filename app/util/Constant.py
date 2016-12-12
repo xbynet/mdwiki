@@ -13,3 +13,6 @@ md_ext = ['markdown.extensions.extra', 'markdown.extensions.abbr', 'markdown.ext
           'markdown.extensions.nl2br', 'markdown.extensions.sane_lists', 'markdown.extensions.smarty',
           'markdown.extensions.toc',
           'markdown.extensions.wikilinks']
+
+class RedisStore(object):
+    G_SHARE='gshare:'

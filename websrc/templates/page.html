@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% from "macros.html" import render_simple_dialog %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lib/jqplugin/jquery.mCustomScrollbar.min.css') }}"> 
+
+{% endblock style %}
 {% block title %}
 
 	<div class="page-title-bg">
@@ -56,6 +61,9 @@
 {% endblock content %}
         {% block endscriptjs %}
 <script src="{{ url_for('static', filename='lib/Autolinker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/clipboard.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/jqplugin/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+
 <script src="{{ url_for('static', filename='page.js') }}"></script> 
  {% endblock endscriptjs %}
 

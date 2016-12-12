@@ -69,7 +69,7 @@ $(function() {
             hljs.highlightBlock(e);
             //init scroll
             var h = $(this).height()
-            var maxH = 300;
+            var maxH = 400;
             if (h > maxH) {
                 $(this).css("max-height", maxH + "px");
                 $(this).mCustomScrollbar({

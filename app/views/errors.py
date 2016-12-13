@@ -19,3 +19,8 @@ def unathorized_error(e):
 @cache.cached(timeout=36000,key_prefix='405')
 def unathorized_method_error(e):
     return  render_template('405.html'),405
+
+@views.app_errorhandler(400)
+def page_400():
+    flash('发生未知错误,通常情况下可能是您的会话已经失效!')
+    return render_template('hintInfo.html')

@@ -24,7 +24,7 @@ class SidebarInit():
         Returns:
             TYPE: Description
         """
-        sidebar=config.G_SHARE['sidebar']=[]
+        sidebar=[]
         with open(Constant.SIDEBAR_PATH,'r',encoding='UTF-8') as f:
             for line in f:
                 # line=f.readline() # #连接:名字:图标名，形式
@@ -40,7 +40,7 @@ class SidebarInit():
                     sidebar.append({'link':tmp[0],'name':tmp[1],'icon':tmp[2],'type':0,'target':tmp[3]})
             # print(sidebar)
             # print(app.config['G_SHARE']['sidebar'])
-
+        config.G_SHARE['sidebar']=sidebar
 
     @classmethod
     def __analyzeLine(cls,line,flag):

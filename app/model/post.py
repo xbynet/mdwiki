@@ -12,7 +12,7 @@ post_tag = db.Table('post_tag', db.Column('tag_id', db.String(100), db.ForeignKe
 class Post(db.Model):
     # id=db.Column(db.Integer,primary_key=True)
     location = db.Column(db.String(100), primary_key=True)
-    tags = db.relationship('Tag', secondary=post_tag, backref=db.backref('pages', lazy='dynamic'))
+    tags = db.relationship('Tag', secondary=post_tag,backref=db.backref('pages',lazy='dynamic'))# lazy='dynamic' #lazy='subquery'
     userId=db.Column(db.String(100))
     createAt=db.Column(db.DateTime(),default=datetime.now())
 

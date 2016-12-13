@@ -203,7 +203,7 @@ nav#navmenu1{
     /*min-height: 200px;*/
 }
 .CodeMirror {
-    height: 400px;
+    height: 300px;
 }
 .CodeMirror .CodeMirror-code .cm-header-1 {
     font-size: 130%;

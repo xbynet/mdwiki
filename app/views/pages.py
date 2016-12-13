@@ -4,6 +4,7 @@ import json,re
 
 from flask import make_response
 from flask_login import current_user,login_required
+from sqlalchemy.orm import joinedload_all
 
 from app.views.forms import PostForm
 from .import forms
@@ -11,10 +12,12 @@ from app.extensions import security, db
 from app import util
 import markdown
 import logging as log
+from datetime import datetime
 from app.model.post import Post, Tag
 from app.model.userrole import  User
 from app.model import vo
-from app.util import searchutil
+from app.util import searchutil,utilpost
+from app.util.utilRedis import redis_client as redis
 import bleach
 
 
@@ -66,6 +69,12 @@ def post_new(path):
         flash("路径参数错误",'danger')
         return render_template('hintInfo.html')
     else:
+        if utilpost.isPostLocked(path):
+            flash("文章已被锁定,其他人正在编辑,您暂时无法编辑.")
+            return render_template('hintInfo.html')
+
+        utilpost.createPostLock(path)
+        
         abspath=os.path.join(current_app.config['PAGE_DIR'],path)+".md"
         if not os.path.exists(abspath):
             form=PostForm()
@@ -89,6 +98,11 @@ def post_edit(path):
         flash("您没有权限编辑此文章!",'warning')
         return render_template('hintInfo.html')
 
+    if utilpost.isPostLocked(path):
+        flash("文章已被锁定，您暂时无权编辑")
+        return render_template('hintInfo.html')
+    utilpost.createPostLock(path)
+
     with open(abspath,encoding='UTF-8') as f:
         content=f.read()
             # print('fcontent'+fcontent)
@@ -96,16 +110,19 @@ def post_edit(path):
     meta = content.split('\n\n', 1)[0]
     meta=util.parsePostMeta(meta) # a dict
     content = content.split('\n\n', 1)[1]
-    
+
     tags=''
     location=path
 
     if post:
         tags=','.join([t.name for t in post.tags])
         location = post.location
+
+    fileModifyAt = datetime.fromtimestamp(os.stat(abspath).st_mtime).strftime('%Y-%m-%d %H:%M:%S')
     form=PostForm(title=meta.get('title',''),content=content,
         location=location,tags=tags,
-        createAt=meta.get('createAt',''),modifyAt=meta.get('modifyAt',' '))
+        createAt=meta.get('createAt',''),modifyAt=meta.get('modifyAt',' '),fileModifyAt=fileModifyAt)
+
     return render_template('editor.html',isPost=True,action=url_for('.post_save'),form=form)
 
 @pages.route('/save',methods=['POST'])
@@ -117,6 +134,7 @@ def post_save():
         if not checked:
             flash('文章地址不合法', 'danger')
             return render_template('hintInfo.html')
+
         postExist=os.path.exists(util.getAbsPostPath(location))
         post=Post.query.filter_by(location=location).first()
         isAdmin=util.checkAdmin()
@@ -135,10 +153,18 @@ def post_save():
             post=Post()
             post.location = location
             post.userId = current_user.id
-            
+            db.session.add(post)
             # else:
             #     flash('error location for post!','danger')
             #     return
+        abspath=util.getAbsPostPath(post.location)
+        if(form.fileModifyAt.data) and os.path.exists(abspath):
+            orginModifyAt=datetime.fromtimestamp(os.stat(abspath).st_mtime).strftime('%Y-%m-%d %H:%M:%S')
+            #如果文件修改时间对不上，说明文件已经被修改过了
+            if form.fileModifyAt.data!=orginModifyAt:
+                flash("保存失败，在您编辑文章过程中，文件已经被修改过了!")
+                return render_template('hintInfo.html')
+
         tags=form.tags.data.split(',')
         tagsList=[]
         if isinstance(tags,list):
@@ -159,9 +185,9 @@ def post_save():
                 # db.session.add(tagObj)
                 tagsList.append(tagObj)
 
+        post=db.session.merge(post)
+        #print(post in db.session)
         post.tags=tagsList
-        if isNew:
-            db.session.add(post)
         db.session.commit()
 
         abspath=util.getAbsPostPath(post.location)
@@ -181,9 +207,12 @@ def post_save():
             searchutil.indexDocument([postvo])
         else:
             searchutil.updateDocument([postvo])
+        
+
+        utilpost.releasePostLock(post.location)
 
         return redirect(url_for('.post_get',path=post.location))
-  
+    
     flash('保存失败', 'danger')
     return render_template('hintInfo.html')
 
@@ -272,3 +301,27 @@ def search(curPage):
 def rebuildIndex():
     searchutil.reBuildIndex()
     return jsonify({'status':'ok'})
+
+
+@pages.route('/checkLock')
+def checkPostLock():
+    """文件锁定失效由两个redis string变量控制utilpost.getPostLockKey返回的key0,key1
+    key0表示最大允许失效时间，key1表示临时允许失效时间，结合两者可以越过无法处理浏览器关闭、刷新等事件的问题。
+    key1设定时长较短为60s，浏览器轮询服务端来不断刷新过期时间，以确保锁定持续。文章编辑也仅会检查该变量是否存在，存在则表示锁定。
+    如果key1不存在，则不会去检查key0，这时处于没有锁定状态，但是如果key1不存在，那么也将删除key0，因为这时已超出最大允许编辑时间。
+    Returns:
+        TYPE: Description
+    """
+    if not request.args.get('location'):
+        return jsonify({'status':'fail'})
+
+    key0,key1=utilpost.getPostLockKey(request.args.get('location'))
+
+    if redis.get(key0):
+        redis.expire(key1,60)
+        return jsonify({'status':'ok'})
+    else:
+        #如果失效总时间过期，那么删除临时失效时间，这时文章锁定真正失效。
+        redis.delete(key1)
+        return jsonify({'status':'unlock'})
+

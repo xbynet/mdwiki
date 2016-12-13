@@ -51,3 +51,4 @@ class PostForm(FlaskForm):
     location=HiddenField('location',validators=[DataRequired()])
     createAt=HiddenField('createAt',default=util.getNowFmtDate())
     modifyAt=HiddenField('createAt',default=util.getNowFmtDate())
+    fileModifyAt=HiddenField('fileModifyAt',default=util.getNowFmtDate())

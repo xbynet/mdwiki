@@ -8,6 +8,7 @@ $(function() {
             return confirmationMessage; // 兼容 Gecko + Webkit, Safari, Chrome
         }
     });
+
     $("form:eq(1)").validate({
         submitHandler: function(form) {
             window.isCloseHint=false;
@@ -24,12 +25,19 @@ $(function() {
     var simplemde = new SimpleMDE({
         element: document.getElementById("textArea1"),
         indentWithTabs: false,
+        tabSize:4,
         placeholder: "请书写文章吧",
         renderingConfig: {
             singleLineBreaks: false,
             codeSyntaxHighlighting: true,
         },
         spellChecker: false,
+        insertTexts: {
+               // horizontalRule: ["", "\n\n-----\n\n"],
+               // image: ["![](http://", ")"],
+                link: ["[", "](/pages/)"]
+               // table: ["", "\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text      | Text     |\n\n"],
+        },
         // styleSelectedText: false,
         status: ["autosave", "lines", "words", "cursor"],
         toolbar: ["bold", "italic", "strikethrough", "heading", "heading-1", "heading-2", "heading-3", "code", "quote", "unordered-list", "ordered-list", "clean-block", "link", "image", "table", "horizontal-rule", "side-by-side", "preview", "fullscreen", "guide", {
@@ -47,7 +55,7 @@ $(function() {
             title: "保存",
         }, ]
     });
-    simplemde.toggleSideBySide();
+    //simplemde.toggleSideBySide();
     simplemde.codemirror.on("paste", function(editor, e) {
         // console.log(e.clipboardData)
         if (!(e.clipboardData && e.clipboardData.items)) {
@@ -109,7 +117,7 @@ $(function() {
         alert('Web Uploader 不支持您的浏览器！如果你使用的是IE浏览器，请尝试升级 flash 播放器');
         throw new Error('WebUploader does not support the browser you are using.');
     }
-    console.log(WebUploader);
+    //console.log(WebUploader);
     var uploader = WebUploader.create({
         swf: 'lib/webuploader/Uploader.swf',
         // 文件接收服务端。
@@ -184,7 +192,25 @@ $(function() {
     }
 
     initTag();
+    keepaliveAndCheckLock();
 
+    function keepaliveAndCheckLock(){
+
+        var url=$("#checkLock").data("url");
+        var location=$("#location").val();
+        //var modifyAt=$("#modifyAt").val();
+        test();
+        function test(){
+
+            $.get(url,{location:location},function(data){
+                if(data.status=='unlock'){
+                    alert("请注意，文章已经解除占用，请及时保存以免发生冲突！");
+                }
+            },'json');
+            console.log('test');
+            setTimeout(test, 30*1000);
+        }
+    }
     function initTag() {
 
         /*tag input init taggle.js*/

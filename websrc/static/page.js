@@ -73,44 +73,13 @@ $(function() {
             if (h > maxH) {
                 $(this).css("max-height", maxH + "px");
                 $(this).mCustomScrollbar({
-                    setTop: 0,
-                    setLeft: 0,
                     axis: "y",
                     scrollbarPosition: "inside",
-                    scrollInertia: 350,
-                    autoDraggerLength: !0,
-                    alwaysShowScrollbar: 0,
-                    snapOffset: 0,
+                    scrollInertia: 200,
                     mouseWheel: {
-                        enable: !0,
-                        scrollAmount: "auto",
-                        axis: "y",
-                        deltaFactor: "auto",
-                        disableOver: ["select", "option", "keygen", "datalist", "textarea"]
+                        scrollAmount: 200
                     },
-                    scrollButtons: {
-                        scrollType: "stepless",
-                        scrollAmount: "auto"
-                    },
-                    keyboard: {
-                        enable: !0,
-                        scrollType: "stepless",
-                        scrollAmount: "auto"
-                    },
-                    contentTouchScroll: 25,
-                    documentTouchScroll: !0,
-                    advanced: {
-                        autoScrollOnFocus: "input,textarea,select,button,datalist,keygen,a[tabindex],area,object,[contenteditable='true']",
-                        updateOnContentResize: !0,
-                        updateOnImageLoad: "auto",
-                        autoUpdateTimeout: 60
-                    },
-                    theme: "3d-thick",//"rounded-dots-dark",
-                    callbacks: {
-                        onTotalScrollOffset: 0,
-                        onTotalScrollBackOffset: 0,
-                        alwaysTriggerOffsets: !0
-                    }
+                    theme: "3d-thick"//"rounded-dots-dark",
                 });
             }
 

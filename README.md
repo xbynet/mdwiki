@@ -3,16 +3,20 @@ markdown wiki by python with flask
 
 ![](home.png)
 
+采用Python+Flask+Redis+SQLite开发（看后面选型介绍）
+
 # 功能特性：
 
-markdown编辑器支持图片粘贴与拖拽上传,支持实时预览。
+首先它的定位是一款wiki系统，旨在作为个人或小团队的知识库管理系统。
 
+- markdown编辑器支持图片粘贴与拖拽上传,支持实时预览。
 - wiki检索
 - 图片管理
 - 备份管理
 - 标签
 - 文章编辑定时独占锁定
 - IP、session两层登录次数等限制及登录验证码。
+- 通过fabric支持自动化分发部署
 - 不开放注册，仅限个人或小团体使用。
 - 提供dokuwiki to markdown转换脚本
 - 其他

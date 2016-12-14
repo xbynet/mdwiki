@@ -121,7 +121,7 @@ class AliyunOSS(object):
         Returns:
             TYPE: the url for download
         """
-        return self.bucket.sign_url('GET', key, 1200)  # 1200s
+        return self.bucket.sign_url('GET', key, 1200).replace('-internal','')  # 1200s
 
     def percentage(self, consumed_bytes, total_bytes):
         """upload progress record

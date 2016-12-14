@@ -14,3 +14,4 @@ venv
 /info.log
 /errors.log
 /.idea
+/set_env.bat

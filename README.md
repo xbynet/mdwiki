@@ -5,21 +5,17 @@ markdown wiki by python with flask
 
 # 功能特性：
 
-1、markdown编辑器支持图片粘贴与拖拽上传,支持实时预览。
+markdown编辑器支持图片粘贴与拖拽上传,支持实时预览。
 
-2、wiki检索
-
-3、图片管理
-
-4、tag
-
-5、IP、登录次数等限制
-
-6、不开放注册，仅限个人或小团体使用。
-
-7、提供dokuwiki to markdown转换脚本
-
-8、其他
+- wiki检索
+- 图片管理
+- 备份管理
+- 标签
+- 文章编辑定时独占锁定
+- IP、session两层登录次数等限制及登录验证码。
+- 不开放注册，仅限个人或小团体使用。
+- 提供dokuwiki to markdown转换脚本
+- 其他
 
 # 安装
 目前仅支持python3
@@ -33,36 +29,29 @@ markdown wiki by python with flask
     python run.py run
 
 如果你想在正式环境中部署，请参考conf目录下的相关配置文件。
-
 如果你想进行二次开发，那么你需要安装node.js
 
     npm init
-    replace gulp-version-number of node-modules with conf/
+    #replace gulp-version-number of node-modules with conf/
     gulp-version-number
     gulp dev
     gulp watch
 
 # 使用
 
-新建页面 /pages/<your_page_name>
+- 新建页面 /pages/<your_page_name>
+- 侧边栏模式 # /pages/db:数据库:cloud 分别代表链接，名称，图标
 
-侧边栏模式 # /pages/db:数据库:cloud 分别代表链接，名称，图标
 
 # 目前尚待完善的地方：
 
-不支持主题化
-
-不支持插件化
-
-图片管理没有进行分类
-
-菜单不支持自定义
-
-没有集成爬虫功能
-
-性能与缓存需要进行优化
-
-代码将在后续大版本中重构
+- 不支持主题化
+- 不支持插件化
+- 图片管理没有进行分类
+- 菜单不支持自定义
+- 没有集成爬虫功能
+- 性能与缓存需要进行优化
+- 代码将在后续大版本中重构
 
 
 # 技术选型

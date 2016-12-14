@@ -188,7 +188,7 @@ def post_save():
         post=db.session.merge(post)
         #print(post in db.session)
         post.tags=tagsList
-        db.session.commit()
+        #db.session.commit()
 
         abspath=util.getAbsPostPath(post.location)
 
@@ -238,7 +238,7 @@ def post_delete(path):
         term=dict(fieldName='location',text=path)
         try:
             searchutil.deleteDocument([term])
-            db.session.commit()
+            #db.session.commit()
             flash("删除成功！", "success")
         except AttributeError as e:
             flash("发生内部错误 %s" % str(e),'danger')
@@ -304,6 +304,7 @@ def rebuildIndex():
 
 
 @pages.route('/checkLock')
+@login_required
 def checkPostLock():
     """文件锁定失效由两个redis string变量控制utilpost.getPostLockKey返回的key0,key1
     key0表示最大允许失效时间，key1表示临时允许失效时间，结合两者可以越过无法处理浏览器关闭、刷新等事件的问题。

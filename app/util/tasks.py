@@ -31,7 +31,7 @@ def backupDataTask():
     #only retain recent 10 days file
     keylist=['data'+(datetime.now()+timedelta(-i-30)).strftime('%Y%m%d')+'.tar.gz' for i in range(10)]
     files=oss.listFiles()
-    delKeylist=[key for key in keylist for file in files if key==file.name ]
+    delKeylist=[key for key in keylist for file in files if key==file['name']]
     oss.deleteFile(delKeylist)
     
     status='成功' if isSuccess else '失败'

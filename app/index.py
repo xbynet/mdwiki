@@ -60,7 +60,10 @@ def argsErrorHandle(e):
     flash(e.msg,'danger')
     return render_template('hintInfo.html')
 
-
+@app.after_request
+def after_clean(resp,*args,**kwargs):
+    db.session.commit()
+    return resp
 @app.teardown_request
 def dbsession_clean(exception=None):
     try:

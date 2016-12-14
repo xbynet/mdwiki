@@ -31,7 +31,7 @@ def saveSidebar():
         with open(Constant.SIDEBAR_PATH,'w',encoding='UTF-8') as f:
             #这一步很坑，一定要去掉\r，否则每次编辑器显示都会多出空行
             content=form.content.data.replace('\r','')
-            print(content)
+            #print(content)
             f.write(content)
         SidebarInit.initSidebar()
         return redirect(url_for('home'))

@@ -181,6 +181,7 @@ def getAbsPostPath(location):
     Returns:
         TYPE: Description
     """
+
  #   with current_app.app_context():
     abspath=os.path.join(config.PAGE_DIR,location.replace('/',os.sep))+".md"
 

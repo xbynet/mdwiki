@@ -72,6 +72,7 @@ def dbsession_clean(exception=None):
         pass
 
 
+
 @app.route('/')
 @app.route('/home')
 @app.route('/index')

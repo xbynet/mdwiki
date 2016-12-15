@@ -165,7 +165,7 @@ def post_save():
                 flash("保存失败，在您编辑文章过程中，文件已经被修改过了!")
                 return render_template('hintInfo.html')
 
-        tags=form.tags.data.split(',')
+        tags=form.tags.data.lower().split(',')
         tagsList=[]
         if isinstance(tags,list):
             for tagStr in tags:

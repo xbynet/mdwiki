@@ -185,10 +185,10 @@ def post_save():
                 # db.session.add(tagObj)
                 tagsList.append(tagObj)
 
-        post=db.session.merge(post)
+        #post=db.session.merge(post)
         #print(post in db.session)
         post.tags=tagsList
-        #db.session.commit()
+
 
         abspath=util.getAbsPostPath(post.location)
 

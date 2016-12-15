@@ -58,6 +58,7 @@ MAIL_DEFAULT_SENDER = 'xbynet<xbynet@163.com>'
 ###########################
 # SQLAchemy config
 ###########################
+# deprecated SQLALCHEMY_COMMIT_ON_TEARDOWN=True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
 # SQLALCHEMY_DATABASE_URI='mysql://root:1234@localhost/xbysite'
 SQLALCHEMY_ECHO = True if DEBUG else False

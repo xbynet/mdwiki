@@ -32,7 +32,9 @@ def backupDataTask():
     keylist=['data'+(datetime.now()+timedelta(-i-30)).strftime('%Y%m%d')+'.tar.gz' for i in range(10)]
     files=oss.listFiles()
     delKeylist=[key for key in keylist for file in files if key==file['name']]
-    oss.deleteFile(delKeylist)
+    
+    if len(delKeylist)>0:
+        oss.deleteFile(delKeylist)
     
     status='成功' if isSuccess else '失败'
     msg='备份状态为:%s' % status

@@ -192,23 +192,25 @@ $(function() {
     }
 
     initTag();
-    keepaliveAndCheckLock();
+    keepaliveAndCheckLock(); 
 
     function keepaliveAndCheckLock(){
 
         var url=$("#checkLock").data("url");
-        var location=$("#location").val();
+        var location=$("#location").val(); 
         //var modifyAt=$("#modifyAt").val();
+        window.unlockNotify=false;
         test();
         function test(){
-
             $.get(url,{location:location},function(data){
-                if(data.status=='unlock'){
+                if(data.status=='unlock' && (!window.unlockNotify)){
+                    window.unlockNotify=true;
+                    debugger;
                     alert("请注意，文章已经解除占用，请及时保存以免发生冲突！");
                 }
             },'json');
             console.log('test');
-            setTimeout(test, 30*1000);
+            setTimeout(test, 30*1000); 
         }
     }
     function initTag() {

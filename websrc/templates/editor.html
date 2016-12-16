@@ -10,7 +10,7 @@
 {%- endblock title %}
 
 {% block content %}
-		<form method="post" action={{ action }} class="">
+		<form method="post" action={{ action }} style="margin-right: 20px;">
 			{{ form.hidden_tag() }}
 			{% if not isSidebar %}
 			    {{ form.title(class="form-control") }}

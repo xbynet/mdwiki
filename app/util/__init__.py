@@ -6,7 +6,9 @@ import shutil
 import re
 import tarfile
 import platform
+import json
 
+import markdown
 from celery import Celery
 from flask import current_app
 from flask_login import current_user
@@ -228,12 +230,9 @@ def checkOS():
     """
     return platform.system().lower()
 
-def html_clean(htmlstr):
-    tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'strong', 'ul']
-    tags.extend(['div','p','hr','br','pre','code','span','h1','h2','h3','h4','h5','del','dl','img','sub','sup','u'
-                 'table','thead','tr','th','td','tbody','dd','caption','blockquote','section'])
-    attributes = {'*':['class','id'],'a': ['href', 'title','target'],'img':['src','style','width','height']}
-    return bleach.linkify(bleach.clean(htmlstr,tags=tags,attributes=attributes))
+
+
+
 
 
 

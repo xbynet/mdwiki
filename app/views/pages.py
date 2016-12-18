@@ -39,17 +39,17 @@ def post_get(path):
             flash("页面不存在!",'danger')
             return render_template('hintInfo.html',canCreate=True,location=path)
         else:
-            with open(abspath,encoding='UTF-8') as f:
-                content=f.read()
-            #title=content.split('\n\n',1)[0]
-            #content=content.split('\n\n',1)[1]
-            md_ext=util.Constant.md_ext
-            md=markdown.Markdown(output_format='html5',encoding='utf-8',extensions=md_ext)
-            html=util.html_clean(md.convert(content))
-
-            toc=md.toc
-            meta=md.Meta
-
+            # with open(abspath,encoding='UTF-8') as f:
+            #     content=f.read()
+            # #title=content.split('\n\n',1)[0]
+            # #content=content.split('\n\n',1)[1]
+            # md_ext=util.Constant.md_ext
+            # md=markdown.Markdown(output_format='html5',encoding='utf-8',extensions=md_ext)
+            # html=util.html_clean(md.convert(content))
+            #
+            # toc=md.toc
+            # meta=md.Meta
+            html,toc,meta=utilpost.get_post_content(abspath)
             log.debug('meta %s' % meta)
             post=Post.query.get(path)
             if not post:
@@ -210,12 +210,11 @@ def post_save():
             searchutil.indexDocument([postvo])
         else:
             searchutil.updateDocument([postvo])
-        
 
         utilpost.releasePostLock(post.location)
-
+        utilpost.delete_post_cache(abspath)
         return redirect(url_for('.post_get',path=post.location))
-    
+
     flash('保存失败', 'danger')
     return render_template('hintInfo.html')
 
@@ -242,6 +241,7 @@ def post_delete(path):
         try:
             searchutil.deleteDocument([term])
             #db.session.commit()
+            utilpost.delete_post_cache(abspath)
             flash("删除成功！", "success")
         except AttributeError as e:
             flash("发生内部错误 %s" % str(e),'danger')

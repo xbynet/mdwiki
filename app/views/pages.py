@@ -53,7 +53,7 @@ def post_get(path):
             log.debug('meta %s' % meta)
             post=Post.query.get(path)
             if not post:
-                post={'location':path}
+                post=Post(location=path)
             # user=User.query.get(post.userId)
             if post.tags:
                 tagNames=[tag.name for tag in post.tags]

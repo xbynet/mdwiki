@@ -85,6 +85,10 @@ CACHE_REDIS_URL = 'redis://'+REDIS_HOST+':'+str(REDIS_PORT)+'/1'
 ###########################
 # Flask-WTF config
 ###########################
+#the default is 3600 seconds buf when we write post > 1 hour ,it occurs errors when we submit save,
+#so, set None to fix it. None stand for it bounds to session lifetime.
+#please see http://flask-wtf.readthedocs.io/en/stable/config.html
+WTF_CSRF_TIME_LIMIT=None
 
 ###########################
 # flask-babel config

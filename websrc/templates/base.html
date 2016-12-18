@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+ 
     {% block meta %}
     {% endblock meta %}
     <title>{{ title }}</title>
+    {% if tagNames %}
+        <meta name="keywords" content="{{ tagNames|join(',') }}"/>
+    {% endif %}
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='lib/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -99,8 +102,8 @@
         <footer>
             <div class="panel panel-info">
                 <div class="panel-body" style="color: #fff;background-color: #205081 !important;">
-                    {{ config.APP_NAME }} {{ config.APP_START_YEAR }}-{{ moment().format('YYYY年') }}.版权所有！PoweredBy
-                    xbynet.
+                    {{ config.APP_NAME }} {{ config.APP_START_YEAR }}-{{ moment().format('YYYY年') }}.xbynet版权所有！PoweredBy
+                    <a style="color: #FFF;" href="https://github.com/xbynet/mdwiki">mdwiki</a>.
                 </div>
             </div>
         </footer>

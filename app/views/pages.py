@@ -55,7 +55,9 @@ def post_get(path):
             if not post:
                 post={'location':path}
             # user=User.query.get(post.userId)
-            return render_template('page.html',content=html,toc=toc,title=meta.get('title',' ')[0],post=post,author=meta.get('author',' ')[0] ,meta=meta)
+            if post.tags:
+                tagNames=[tag.name for tag in post.tags]
+            return render_template('page.html',content=html,toc=toc,title=meta.get('title',' ')[0],post=post,author=meta.get('author',' ')[0] ,meta=meta,tagNames=tagNames)
 
         # dirPath=path.split('/')[:-1]
         # filename=path.split('/')[-1]
@@ -270,7 +272,7 @@ def postlistByTag(tagName,curNum):
             meta=util.parsePostMeta(metaStr)
             summary=postContent[:200]
         posts.append({'location':cur_post.location,'title':meta['title'],'summary':summary,'meta':meta})
-    return render_template('tagsPostList.html',tagName=tagName,paginate=paginate,posts=posts)
+    return render_template('tagsPostList.html',tagName=tagName,paginate=paginate,posts=posts,curNum=curNum)
 
 
 @pages.route("/tag/list")

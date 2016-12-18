@@ -45,7 +45,7 @@ def post_get(path):
             #content=content.split('\n\n',1)[1]
             md_ext=util.Constant.md_ext
             md=markdown.Markdown(output_format='html5',encoding='utf-8',extensions=md_ext)
-            html=md.convert(content)
+            html=util.html_clean(md.convert(content))
 
             toc=md.toc
             meta=md.Meta

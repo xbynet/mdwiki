@@ -1,12 +1,12 @@
 $(function() {
-    var linktext = Autolinker.link($("#postContent").html(), {
+/*    var linktext = Autolinker.link($("#postContent").html(), {
         className: 'lincl',
         urls: {
             tldMatches: false
         }
     });
-    $("#postContent").html(linktext);
-
+    $("#postContent").html(linktext);*/
+ 
     $('#delDialog').dialog({
         autoOpen: false,
         width: 600,

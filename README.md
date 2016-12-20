@@ -22,30 +22,108 @@ markdown wiki by python with flask
 - 其他
 
 # 安装
-目前仅支持python3
+目前仅支持python3,建议Python3.4及以上
 
-    pip install -r requirements.txt
-    
-    python run.py create_db
-    
-    python run.py init_admin 
-    
-    python run.py run
+## 生产环境安装:
+推荐采用SuperVisor+Nginx+Gunicorn+Virtualenv的组合。以ubuntu为例：(你也可以参考conf/目录下的配置文件):
 
-如果你想在正式环境中部署，请参考conf目录下的相关配置文件。
-如果你想进行二次开发，那么你需要安装node.js
+基础包安装
 
+```
+sudo apt-get install supervisor -y
+sudo apt-get install build-essential python-software-properties software-properties-common -y
+sudo add-apt-repository ppa:nginx/stable 
+sudo add-apt-repository -y ppa:rwky/redis
+sudo apt-get update
+sudo apt-get install nginx  -y
+sudo apt-get install -y redis-server
+sudo apt-get install python3-pip -y
+sudo apt-get install libssl-dev libffi-dev python-dev python3-dev -y
+sudo apt-get install libevent-dev libssl-dev libffi-dev libsasl2-dev libpq-dev  libxml2-dev libxslt1-dev libldap2-dev  -y
+```
+
+配置pip源为豆瓣源：
+vim ~/.pip/pip.conf
+
+```
+[global]
+index-url = https://pypi.douban.com/simple #豆瓣源，可以换成其他的源
+disable-pip-version-check = true          #取消pip版本检查，排除每次都报最新的pip
+timeout = 120
+```
+
+配置virtualenv:
+
+```
+sudo pip3 install virtualenv
+mkdir venv && cd venv 
+virtualenv mdwiki
+source mdwiki/bin/activate
+pip3 install gunicorn
+```
+
+配置相关配置(具体配置文件请参考conf/目录下对应文件)
+
+```
+sudo vim  mdwiki/gunicorn.conf.py
+sudo vim /etc/supervisor/conf.d/default.conf
+sudo vim /etc/nginx/conf.d/default.conf
+```
+
+设置开机自启
+
+```
+sudo vim /etc/rc.local
+/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+```
+
+生产环境部署：
+在客户机安装NodeJS及gulp，客户机安装fabric
+
+```
+pip3 install fabric
+python run.py create_db
+python run.py init_admin  -n yourname -e youremail -p yourpassword 
+```
+
+配置好conf目录下的fabric.py脚本。然后在项目目录下执行：
+
+```
+gulp product
+fab -f conf/fabric.py deploy
+```
+
+即可实现自动部署。以后每次即只要执行这两条命令就可部署至远程。
+
+如果你需要二次开发，或者只是想本地进行简单测试：本地开发环境安装
+
+## 本地开发环境安装:
+
+前端配置的话你需要安装node.js，及gulp。
+
+```
     npm init
-    #replace gulp-version-number of node-modules with conf/
-    gulp-version-number
+    #用conf/gulp-version-number替换 node_moules/gulp-version-number 
     gulp dev
     gulp watch
+```
+
+python配置你需要
+
+```
+pip3 install -r requirements.txt
+python run.py create_db
+python run.py init_admin  -n yourname -e youremail -p yourpassword 
+python run.py run
+```
 
 # 使用
 
-- 新建页面 /pages/<your_page_name>
+- 新建页面 /pages/< your_page_name>
 - 侧边栏模式 # /pages/db:数据库:cloud 分别代表链接，名称，图标
 
+
+一些说明后续会细化及补充
 
 # 目前尚待完善的地方：
 

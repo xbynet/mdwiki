@@ -39,7 +39,7 @@ def releasePostLock(path):
 
 def html_clean(htmlstr):
     tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'strong', 'ul']
-    tags.extend(['div','p','hr','br','pre','code','span','h1','h2','h3','h4','h5','del','dl','img','sub','sup','u'
+    tags.extend(['div','p','hr','br','pre','code','span','h1','h2','h3','h4','h5','del','dl','img','sub','sup','u',
                  'table','thead','tr','th','td','tbody','dd','caption','blockquote','section'])
     attributes = {'*':['class','id'],'a': ['href', 'title','target'],'img':['src','style','width','height']}
     return bleach.linkify(bleach.clean(htmlstr,tags=tags,attributes=attributes))
@@ -49,6 +49,7 @@ def html_clean(htmlstr):
 def get_post_content(abspath):
     from .utilRedis import redis_client as redis
     key='post_get:%s' % abspath
+
     if redis.exists(key):
         alldict=redis.hgetall(key)
         html=alldict[b'html'].decode('utf-8')
@@ -63,6 +64,7 @@ def get_post_content(abspath):
     md_ext = Constant.md_ext
     md = markdown.Markdown(output_format='html5', encoding='utf-8', extensions=md_ext)
     html = html_clean(md.convert(content))
+
 
     toc = md.toc or ''
     meta = md.Meta or {}

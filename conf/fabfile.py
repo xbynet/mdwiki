@@ -35,7 +35,7 @@ if not os.path.exists(distPath):
 def pack(excludes=[]):
 
     def ecludefiles(path):
-        for name in ['venv','celerybeat-schedule','node_modules','websrc','__pycache__','.git','.idea','dist']+excludes:
+        for name in ['venv','celerybeat-schedule','node_modules','websrc','__pycache__','.git','.idea','dist','.log']+excludes:
             if path.find(os.sep+name)>0:
                 return True
         return False

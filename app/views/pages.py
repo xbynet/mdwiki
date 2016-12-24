@@ -17,7 +17,7 @@ from app.model.post import Post, Tag
 from app.model.userrole import  User
 from app.model import vo
 from app.util import searchutil,utilpost
-from app.util.utilRedis import redis_client as redis
+from app.util.utilRedis import redis_decode_client as redis
 import bleach
 
 
@@ -250,7 +250,7 @@ def post_delete(path):
     return render_template('hintInfo.html')
 
 @pages.route("/list/<string:tagName>/<int:curNum>")
-def postlistByTag(tagName,curNum):
+def     postlistByTag(tagName,curNum):
     if not tagName.strip() or not curNum or curNum<1:
         flash("参数错误!","warning")
         return render_template('hintInfo.html')

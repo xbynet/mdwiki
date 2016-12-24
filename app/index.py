@@ -1,4 +1,6 @@
 from datetime import timedelta
+import threading
+
 from flask import current_app, jsonify,g,session
 from flask_login import user_logged_out
 from flask_security import url_for_security
@@ -9,8 +11,8 @@ import logging as log
 
 from app import config
 from app.views.pages import post_get
-from app.util import exceptions,SidebarInit
-from app.util.utilRedis import redis_client as redis
+from app.util import exceptions,globalshare
+from app.util.utilRedis import redis_decode_client as redis
 from app.factory import db
 
 session_ip_prefix='session_ip_'
@@ -24,7 +26,7 @@ def logoutSignalHandler(sender,user):
 
 @app.context_processor
 def inject_global_args():
-    return config.G_SHARE
+    return dict(**globalshare.get_g_share())
 
 @app.before_request
 def before_request():

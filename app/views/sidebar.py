@@ -33,6 +33,7 @@ def saveSidebar():
             content=form.content.data.replace('\r','')
             #print(content)
             f.write(content)
-        SidebarInit.initSidebar()
+            SidebarInit.initSidebarWithContent(content)
+
         return redirect(url_for('home'))
     return render_template('editor.html',isSidebar=True,action=url_for('.saveSidebar'),form=form)

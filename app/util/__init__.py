@@ -7,6 +7,8 @@ import re
 import tarfile
 import platform
 import json
+import threading 
+import  logging as log
 
 import markdown
 from celery import Celery
@@ -14,37 +16,48 @@ from flask import current_app
 from flask_login import current_user
 
 from datetime import datetime
-
-from app import config
-from . import Constant
 import bleach
+from app import config
+from . import Constant,globalshare
 
 class SidebarInit():
     """Summary
     """
+    lock = threading.Lock()
+
     @classmethod
     def initSidebar(cls):
         """Summary
         Returns:
             TYPE: Description
         """
-        sidebar=[]
-        with open(Constant.SIDEBAR_PATH,'r',encoding='UTF-8') as f:
-            for line in f:
-                # line=f.readline() # #连接:名字:图标名，形式
-                # print(line)
-                if line.startswith('## ') and len(line.strip())>2:
-                    tmp = cls.__analyzeLine(line,'## ')
 
-                    if sidebar[-1].get('childrens') is None :
-                        sidebar[-1]['childrens']=list()
-                    sidebar[-1]['childrens'].append({'link':tmp[0],'name':tmp[1],'icon':tmp[2],'type':1,'target':tmp[3]})
-                elif line.startswith('# ') and len(line.strip())>1:
-                    tmp=cls.__analyzeLine(line,'# ')
-                    sidebar.append({'link':tmp[0],'name':tmp[1],'icon':tmp[2],'type':0,'target':tmp[3]})
-            # print(sidebar)
-            # print(app.config['G_SHARE']['sidebar'])
-        config.G_SHARE['sidebar']=sidebar
+        with open(Constant.SIDEBAR_PATH,'r',encoding='UTF-8') as f:
+            cls.initSidebarWithContent(f.read())
+
+    @classmethod
+    def initSidebarWithContent(cls,content):
+        sidebar = []
+        for line in content.split("\n"):
+            # line=f.readline() # #连接:名字:图标名，形式
+            # print(line)
+            if line.startswith('## ') and len(line.strip()) > 2:
+                tmp = cls.__analyzeLine(line, '## ')
+
+                if sidebar[-1].get('childrens') is None:
+                    sidebar[-1]['childrens'] = list()
+                sidebar[-1]['childrens'].append(
+                    {'link': tmp[0], 'name': tmp[1], 'icon': tmp[2], 'type': 1, 'target': tmp[3]})
+            elif line.startswith('# ') and len(line.strip()) > 1:
+                tmp = cls.__analyzeLine(line, '# ')
+                sidebar.append({'link': tmp[0], 'name': tmp[1], 'icon': tmp[2], 'type': 0, 'target': tmp[3]})
+        # print(sidebar)
+        # print(app.config['G_SHARE']['sidebar'])
+
+        with cls.lock:
+
+            globalshare.set_sidebar(sidebar)
+            # config.G_SHARE['sidebar'] = sidebar
 
     @classmethod
     def __analyzeLine(cls,line,flag):

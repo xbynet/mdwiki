@@ -8,7 +8,7 @@ import markdown
 from flask_login import current_user
 from app import util
 from app.util import Constant
-from app.util.utilRedis import redis_client as redis
+from app.util.utilRedis import redis_decode_client as redis
 
 
 def getPostLockKey(path):
@@ -23,7 +23,7 @@ def getPostLockKey(path):
 def isPostLocked(path):
     key0,key1=getPostLockKey(path)
     key1Value=redis.get(key1)
-    if (not key1Value) or key1Value.decode('utf-8') == current_user.email:
+    if (not key1Value) or key1Value == current_user.email:
         return False
     return True
 
@@ -47,14 +47,14 @@ def html_clean(htmlstr):
 
 
 def get_post_content(abspath):
-    from .utilRedis import redis_client as redis
+
     key='post_get:%s' % abspath
 
     if redis.exists(key):
         alldict=redis.hgetall(key)
-        html=alldict[b'html'].decode('utf-8')
-        toc=alldict[b'toc'].decode('utf-8')
-        meta=json.loads(alldict[b'meta'].decode('utf-8'),encoding='utf-8')
+        html=alldict['html']
+        toc=alldict['toc']
+        meta=json.loads(alldict['meta'],encoding='utf-8')
         redis.expire(key,60*60*1)
         return html,toc,meta
     with open(abspath, encoding='UTF-8') as f:

@@ -9,7 +9,7 @@ from flask_security import Security
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from app import config
 from app.factory import create_app
-from app import util
+
 
 from app.views.forms import LoginForm
 
@@ -40,6 +40,7 @@ else:
     logging.basicConfig(level='INFO')
 
 with app.app_context():
+    from app import util
     # 初始化侧边栏数据
     util.SidebarInit.initSidebar()
 

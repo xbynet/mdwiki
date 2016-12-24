@@ -74,6 +74,5 @@ def get_post_content(abspath):
 
     return html,toc,meta
 def delete_post_cache(abspath):
-    from .utilRedis import redis_client as redis
     key='post_get:%s' % abspath
     redis.delete(key)

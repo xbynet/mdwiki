@@ -54,6 +54,9 @@ $(function() {
     // testAnim('.page-title-bg','jello');
 
     // testOneAnim('.main','bounce');
+    // 
+    $("img").addClass('img-responsive').attr('style','max-height:400px;');
+    
     function initCodeScroll() {
 
         $("pre").each(function(i,e) {

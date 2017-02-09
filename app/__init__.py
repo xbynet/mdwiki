@@ -50,3 +50,5 @@ for bp in all_blueprint:
     app.register_blueprint(bp)
 
 #logging.warn('api_key %s' % os.environ.get('aliyun_api_key', ''))
+#
+from app.util import tasks

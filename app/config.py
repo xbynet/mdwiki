@@ -106,28 +106,28 @@ LANGUAGES = {
 ###########################
 # Celery config
 ###########################
-CELERY_CONFIG={
-    'BROKER_URL' : 'redis://'+REDIS_HOST+':'+str(REDIS_PORT)+'/0',
-    #CELERY_RESULT_BACKEND = 'redis://localhost/0'
-    'CELERY_TASK_SERIALIZER':'json',
-    #CELERY_ACCEPT_CONTENT=['json']
-    'CELERY_RESULT_SERIALIZER':'json',
-    'CELERY_TIMEZONE' : 'Asia/Shanghai',
-    # CELERY_TASK_PUBLISH_RETRY=3
+# CELERY_CONFIG={
+#     'BROKER_URL' : 'redis://'+REDIS_HOST+':'+str(REDIS_PORT)+'/0',
+#     #CELERY_RESULT_BACKEND = 'redis://localhost/0'
+#     'CELERY_TASK_SERIALIZER':'json',
+#     #CELERY_ACCEPT_CONTENT=['json']
+#     'CELERY_RESULT_SERIALIZER':'json',
+#     'CELERY_TIMEZONE' : 'Asia/Shanghai',
+#     # CELERY_TASK_PUBLISH_RETRY=3
 
-    # 周期性任务定义:
-    'CELERYBEAT_SCHEDULE' : {
-        'bak-every-day': {
-        'task': 'tasks.backup',
-            # 'schedule': timedelta(seconds=30),#timedelta(minutes=50)
-        'schedule': crontab( hour='4',day_of_month='*/1')
-            #'args':
-        }
-    },
-    'loglevel': 'DEBUG' if DEBUG else 'INFO',
-    'traceback': True,
-    'include':['app.util.tasks']
-}
+#     # 周期性任务定义:
+#     'CELERYBEAT_SCHEDULE' : {
+#         'bak-every-day': {
+#         'task': 'tasks.backup',
+#             # 'schedule': timedelta(seconds=30),#timedelta(minutes=50)
+#         'schedule': crontab( hour='4',day_of_month='*/1')
+#             #'args':
+#         }
+#     },
+#     'loglevel': 'DEBUG' if DEBUG else 'INFO',
+#     'traceback': True,
+#     'include':['app.util.tasks']
+# }
 
 '''CELERY_TASK_PUBLISH_RETRY_POLICY={
     'max_retries': 3, #默认3次，0 or None代表一直重试

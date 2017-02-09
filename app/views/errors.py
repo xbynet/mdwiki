@@ -1,6 +1,9 @@
 from flask import render_template
-from . import views
+from flask.helpers import flash
+
 from app.factory import cache
+
+from . import views
 
 
 @views.app_errorhandler(404)

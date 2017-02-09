@@ -11,7 +11,7 @@ $(function() {
             $(this).removeClass(cls + ' animated');
         });
     };
-    $('a,.page-title-bg h2,.colorgraph').on('mouseenter', function(e) {
+    $('.colorgraph').on('mouseenter', function(e) {
         testOneAnim(this, 'pulse');
     });
     $("#searchBtn").on('click', function() {

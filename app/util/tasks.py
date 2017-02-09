@@ -1,18 +1,22 @@
 import sys,os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..')))
-import celery
-from celery.bin import worker as celery_worker
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..')))
+#import celery
+#from celery.bin import worker as celery_worker
 from app import config,app
 from app.util import backup
 from datetime import datetime,timedelta
 from flask_mail import Message
 from app.extensions import mail
 import logging as log
+from apscheduler.schedulers.background import BackgroundScheduler
+
+scheduler = BackgroundScheduler()
+scheduler.add_jobstore('redis',jobs_key='mdwiki.jobs', run_times_key='mdwiki.run_times')
 
 #坑啊，include必须填，没仔细看文档。
-celery_app=celery.Celery('app',include=['app.util.tasks'])
+#celery_app=celery.Celery('app',include=['app.util.tasks'])
 
-celery_app.config_from_object(config.CELERY_CONFIG)
+#celery_app.config_from_object(config.CELERY_CONFIG)
 
 def sendMail(content):
     with app.app_context():
@@ -20,7 +24,8 @@ def sendMail(content):
             body=content)
         mail.send(msg)
 
-@celery_app.task(name='tasks.backup')
+#@celery_app.task(name='tasks.backup')
+@scheduler.scheduled_job('cron',minute=0,hour=4,id='backupDataTask',replace_existing=True)
 def backupDataTask():
     #datapath='/opt/www/mdwiki/data'+datetime.now().strftime('%Y%m%d')+'.tar.gz'
     datapath=backup.tarzipData()
@@ -48,3 +53,5 @@ def test():
         f.write('1111')
 
 #test.delay()
+
+scheduler.start()

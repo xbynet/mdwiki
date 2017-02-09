@@ -25,7 +25,7 @@ def sendMail(content):
         mail.send(msg)
 
 #@celery_app.task(name='tasks.backup')
-@scheduler.scheduled_job('cron',minute=0,hour=4,id='backupDataTask',replace_existing=True)
+@scheduler.scheduled_job('cron',minute=0,hour=4,id='backupDataTask')
 def backupDataTask():
     #datapath='/opt/www/mdwiki/data'+datetime.now().strftime('%Y%m%d')+'.tar.gz'
     datapath=backup.tarzipData()

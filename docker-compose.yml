@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  dockerimgvol:
+    image: dockerimgvol
+    build: .
+    ports:
+      - 3000:3000
